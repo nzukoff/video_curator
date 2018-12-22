@@ -1,0 +1,31 @@
+{
+  "name": "video-curator",
+  "scripts": {
+    /* "test": "./gradlew --full-stacktrace --debug test" */
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "cleardb:ignite"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/gradle"
+    }
+  ],
+  "environments": {
+    "test": {
+      "addons":[
+        "cleardb:ignite:in-dyno"
+      ],
+      "buildpacks": [
+        { "url": "heroku/gradle"},
+        { "url": "https://github.com/heroku/heroku-buildpack-google-chrome"},
+        { "url": "https://github.com/heroku/heroku-buildpack-chromedriver"}
+      ]
+    }
+  }
+}

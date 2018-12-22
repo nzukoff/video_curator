@@ -1,0 +1,13 @@
+[X] Given that I type the url into the address bar, when I press enter, then I can see a live web app with a logo.
+[X] Given a browser, when I browse to the site, then I see a list of titled videos.
+[X] Given a browser, when I browse to the site, then I see an "Add Video" button.
+[X] Given I see the "Add Video" button, when I click it, then I am taken to an Add Video page.
+[X] Given I am on the Add Video page, when I fill in the fields and click "Add", I am taken back to the list page.
+[X] Given that I have added a video, when I am on the list page, then I see my video.
+[X] Given that I see video in the list, when I click a video, I am taken to a Video Edit page.
+[X] Given I am on the Video edit page, when I change a video's name and click Save, then I am taken back to the list page.
+[X] Given that I have made updates to videos, when I am on the list page, I should see the modified information.
+[X] Given that I am on the edit page, then I see a delete button.
+[X] Given that I am on the edit page, when I click the delete button, then I am taken back to the list page.
+[X] Given that I have deleted a video, when I am on the list page, then I no longer see the deleted video.
+As Mark, I want to get an email when new versions arrive, so that I can use the latest features. Given that I am registered with CI, when a new version is deployed, then I receive an email

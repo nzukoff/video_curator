@@ -1,0 +1,81 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.5.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+    id "com.moowork.node" version '1.2.0'
+    id 'com.adarshr.test-logger' version '1.5.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.galvanize'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    runtime('mysql:mysql-connector-java:8.0.11')
+
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('javax.xml.bind:jaxb-api:2.3.0')
+    compile('org.flywaydb:flyway-core:5.2.0')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'org.fluentlenium:fluentlenium-core:3.4.1'
+    testCompile 'org.fluentlenium:fluentlenium-junit:3.4.1'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.5.3'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.5.3'
+    testCompile('org.seleniumhq.selenium:selenium-remote-driver:3.5.3')
+    testCompile('org.seleniumhq.selenium:selenium-api:3.5.3')
+    testCompile "org.seleniumhq.selenium:htmlunit-driver:2.27"
+}
+
+node {
+    download = true
+    version = '10.9.0'
+    npmWorkDir = file("${project.buildDir}/npm")
+    nodeModulesDir = file("${project.projectDir}/client")
+}
+
+task copyResources(type: Copy) {
+    from 'client/build/' into 'src/main/resources/static'
+}
+
+npm_test.dependsOn npm_run_build
+
+copyResources.dependsOn npm_test
+
+processResources.dependsOn copyResources
+
+test.outputs.upToDateWhen {false}
+
+//test {
+//	testLogging {
+//		events "passed", "skipped", "failed"
+//	}
+//
+//  //testLogging.showStandardStreams = true
+//}
+
+//testlogger {
+//    showStandardStreams true
+//    showPassedStandardStreams false
+//    showSkippedStandardStreams false
+//    showFailedStandardStreams true
+//}
