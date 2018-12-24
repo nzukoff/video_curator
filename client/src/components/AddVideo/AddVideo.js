@@ -7,7 +7,7 @@ export class AddVideo extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { updatedTitle: '' }
+    this.state = { updatedTitle: '', link: '' }
   }
 
   editTitle = (event) => {
@@ -17,12 +17,20 @@ export class AddVideo extends Component {
     this.setState({ updatedTitle: value })
   }  
 
+  editLink = (event) => {
+    const target = event.target
+    const value = target.value
+  
+    this.setState({ link: value })
+  }
+
   render() {
     return (
       <div className="AddVideo">
         <form onSubmit={(e) => {e.preventDefault(); this.props.saveAddedVideo(this.state.updatedTitle)}}>
           <input name='title' value={this.state.updatedTitle} onChange={(e) => this.editTitle(e)} autoFocus />
-          <button type='button' className="btn btn-secondary" onClick={() => this.props.saveAddedVideo(this.state.updatedTitle)}>Add</button>
+          <input name='link' value={this.state.link} onChange={(e) => this.editLink(e)} />
+          <button type='button' className="btn btn-secondary" onClick={() => this.props.saveAddedVideo(this.state.updatedTitle, this.state.link)}>Add</button>
         </form>
       </div>
     )
@@ -30,7 +38,7 @@ export class AddVideo extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  saveAddedVideo: (title) => dispatch(saveAddedVideo(title))
+  saveAddedVideo: (title, link) => dispatch(saveAddedVideo(title, link))
 })
 
 export default connect(

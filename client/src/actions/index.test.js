@@ -112,7 +112,7 @@ describe('async actions', () => {
     fetchMock
       .postOnce('/api/videos',  {
                                   body: {
-                                    id: 1, title: "The Graduate"
+                                    id: 1, title: "Dean Town", link: "https://www.youtube.com/watch?v=hAn-DWwHu6E"
                                   },
                                   headers: {
                                     'content-type': 'application/json'
@@ -123,13 +123,14 @@ describe('async actions', () => {
         type: 'SAVED_ADDED_VIDEO',
         view: 'video_list',
         index: 1,
-        title: 'The Graduate'
+        title: 'Dean Town',
+        link: 'https://www.youtube.com/watch?v=hAn-DWwHu6E'
     }]
 
     const store = mockStore()
 
     // Exercise
-    await store.dispatch(actions.saveAddedVideo("The Graduate"))
+    await store.dispatch(actions.saveAddedVideo("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E"))
     expect(store.getActions()).toEqual(expectedActions)
   })
 

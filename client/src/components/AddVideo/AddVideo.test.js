@@ -12,7 +12,7 @@ it('contains an "Add" button that calls the action creator', () => {
   const saveAddedVideo = sinon.stub()
   const addVideoWrapper = shallow(<AddVideo saveAddedVideo={saveAddedVideo} />);
   const addButton = addVideoWrapper.find('button')
-  addVideoWrapper.setState({updatedTitle: 'Jaws'})
+  addVideoWrapper.setState({updatedTitle: 'Dean Town', link: 'https://www.youtube.com/watch?v=hAn-DWwHu6E'})
 
   // Exercise
   addButton.simulate('click')
@@ -20,5 +20,5 @@ it('contains an "Add" button that calls the action creator', () => {
   // Assert
   expect(addButton).toHaveLength(1)
   expect(saveAddedVideo.calledOnce).toBe(true)
-  expect(saveAddedVideo.calledWith('Jaws')).toBe(true)
+  expect(saveAddedVideo.calledWith('Dean Town', 'https://www.youtube.com/watch?v=hAn-DWwHu6E')).toBe(true)
 })

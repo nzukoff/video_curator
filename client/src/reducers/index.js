@@ -29,7 +29,7 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           view: action.view,
-          videos: [...state.videos, {id: action.index, title: action.title}]
+          videos: [...state.videos, {id: action.index, title: action.title, url: action.url}]
         }
       }
 

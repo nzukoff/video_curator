@@ -3,25 +3,27 @@ export const addVideo = () => ({
   view: 'add_video'
 })
 
-export const saveAddedVideo = (title) => {
+export const saveAddedVideo = (title, link) => {
   return async (dispatch) => {
+    const ytID = link.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/)[1];
     const response = await fetch('/api/videos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id: 0, title: title })
+      body: JSON.stringify({ id: 0, title, link, ytID })
     })
     const video = await response.json()
-    dispatch(savedAddedVideo(video.id, video.title))
+    dispatch(savedAddedVideo(video.id, video.title, video.link))
   }
 }
 
-export const savedAddedVideo = (index, title) => ({
+export const savedAddedVideo = (index, title, link) => ({
   type: 'SAVED_ADDED_VIDEO',
   view: 'video_list',
   index,
-  title
+  title, 
+  link
 })
 
 export const editVideo = (index, title) => ({

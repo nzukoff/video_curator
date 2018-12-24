@@ -38,17 +38,17 @@ describe('reducer', () => {
     const initialState = {
       view: 'add_video',
       videos: [
-        {id: 1, title: 'Star Wars IV'},
-        {id: 2, title: 'Star Trek II'}
+        {id: 1, title: 'Star Wars IV', url: 'https://www.youtube.com/watch?v=yHfLyMAHrQE'},
+        {id: 2, title: 'Star Trek II', url: 'https://www.youtube.com/watch?v=gYbW1F_c9eM'}
       ]
     }
 
     const expected = {
       view: 'video_list',
       videos: [
-        {id: 1, title: 'Star Wars IV'},
-        {id: 2, title: 'Star Trek II'},
-        {id: 3, title: 'Brazil'}
+        {id: 1, title: 'Star Wars IV', url: 'https://www.youtube.com/watch?v=yHfLyMAHrQE'},
+        {id: 2, title: 'Star Trek II', url: 'https://www.youtube.com/watch?v=gYbW1F_c9eM'},
+        {id: 3, title: 'Brazil', url: 'https://www.youtube.com/watch?v=QHgh77iE6qc'}
       ]
     }
 
@@ -56,7 +56,8 @@ describe('reducer', () => {
                                    type: 'SAVED_ADDED_VIDEO',
                                    view: 'video_list',
                                    index: 3,
-                                   title: 'Brazil'
+                                   title: 'Brazil', 
+                                   url: 'https://www.youtube.com/watch?v=QHgh77iE6qc'
                                  }
            )).toEqual(expected)
   })
