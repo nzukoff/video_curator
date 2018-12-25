@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const addVideo = () => ({
   type: 'ADD_VIDEO',
   view: 'add_video'
@@ -78,7 +80,8 @@ export const getVideoList = () => {
   return async (dispatch) => {
     const response = await fetch('/api/videos')
     const videos = await response.json()
-    dispatch(gotVideoList(videos))
+    const updatedVideos = updateVideos(videos)
+    dispatch(gotVideoList(updatedVideos))
   }
 }
 
@@ -86,3 +89,36 @@ export const gotVideoList = (videos) => ({
   type: 'GOT_VIDEOS',
   videos
 })
+
+const findDuration = (duration) => {
+  const durationM = moment.duration(duration)
+  let hours = durationM._data.hours
+  if (hours < 10 && hours > 0) {
+      hours = `0${hours}`
+  }
+  let minutes = durationM._data.minutes
+  if (minutes < 10) {
+      minutes = `0${minutes}`
+  }
+  let seconds = durationM._data.seconds
+  if (seconds < 10) {
+      seconds = `0${seconds}`
+  }
+  return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`
+}
+
+const findTimeSince = (timeCreated) => {
+  const hours = Math.ceil(Math.abs(new Date() - new Date(timeCreated)) / (60 * 60 * 1000))
+  const hoursSince = hours < 2 ? `${hours} hour ` : `${hours} hours `  
+  const days = Math.floor(hours / 24)
+  const daysSince = days > 1 ? `${days} days` : `${days} day`
+  return hours <= 24 ? hoursSince : daysSince
+}
+
+const updateVideos = (videos) => {
+  return videos.map((video, i) => {
+    const timeSince = findTimeSince(video.created)
+    const duration = findDuration(video.duration)
+    return {...video, timeSince: timeSince, duration: duration}
+  })
+}

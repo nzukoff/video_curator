@@ -97,7 +97,7 @@ describe('async actions', () => {
                               })
 
     const expectedActions = [
-      { type: 'GOT_VIDEOS', videos: [ { title: "The Graduate" } ] }
+      { type: 'GOT_VIDEOS', videos: [ { duration: "00:00", timeSince: "NaN day", title: "The Graduate" } ] }
     ]
 
     const store = mockStore()

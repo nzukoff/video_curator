@@ -23,6 +23,7 @@ public class Video {
     private String caption;
     private String licensedContent;
     private String projection;
+    private String thumbnail;
 
     @CreationTimestamp
     private Date created;
@@ -30,7 +31,7 @@ public class Video {
     @UpdateTimestamp
     private Date modified;
 
-    public Video(String title, String link, String ytID, String duration, String dimension, String definition, String caption, String licensedContent, String projection) {
+    public Video(String title, String link, String ytID, String duration, String dimension, String definition, String caption, String licensedContent, String projection, String thumbnail) {
         this.title = title;
         this.link = link;
         this.ytID = ytID;
@@ -40,6 +41,7 @@ public class Video {
         this.caption = caption;
         this.licensedContent = licensedContent;
         this.projection = projection;
+        this.thumbnail = thumbnail;
         this.id = 0;
     }
 
@@ -135,6 +137,14 @@ public class Video {
 
     public void setProjection(String projection) {
         this.projection = projection;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public Date getCreated() {

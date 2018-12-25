@@ -6,47 +6,53 @@ import VideoList from './components/VideoList/VideoList';
 import AddVideo from './components/AddVideo/AddVideo';
 import EditVideo from './components/EditVideo/EditVideo';
 
-import { shallow } from 'enzyme';
+// import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-it('displays a logo on start', () => {
-  //Setup
-  const appWrapper = shallow(<App />);
-  const logo = appWrapper.find('.logo');
+import { createShallow } from '@material-ui/core/test-utils'
+import Button from '@material-ui/core/Button'
 
-  // Assert
-  expect(logo).toHaveLength(1);
-});
+describe('App', () => {
+  let shallow;
 
-it('displays a video list', () => {
-  // Setup
-  const appWrapper = shallow(<App view="video_list"/>);
-  const videoList = appWrapper.find(VideoList);
+  beforeEach(() => {
+    shallow = createShallow();
+  });
 
-  // Assert
-  expect(videoList).toHaveLength(1);
-});
+  it('displays a video list', () => {
+    // Setup
+    const appWrapper = shallow(<App view="video_list"/>);
+    const videoList = appWrapper.find(VideoList);
 
-it('displays an "Add Video" button', () => {
-  // Setup
-  const appWrapper = shallow(<App view="video_list"/>);
-  const addVideoButton = appWrapper.find('button');
+    // Assert
+    expect(videoList).toHaveLength(1);
+  });
 
-  // Assert
-  expect(addVideoButton).toHaveLength(1);
-  expect(addVideoButton.text()).toBe('Add Video')
-});
+  it('displays an "Add Video" button', () => {
+    // Setup
+    // const shallow = createShallow()
+    
+    const appWrapper = shallow(
+      <App view="video_list"/>
+    );
 
-it('clicking the "Add Video" button calls the "addVideo()" action creator', () => {
-  // Setup
-  const addVideo = sinon.stub()
-  const appWrapper = shallow(<App view="video_list" addVideo={addVideo}/>)
-  const addButton = appWrapper.find('button')
+    const addVideoButton = appWrapper.find(Button);
 
-  // Exercise
-  addButton.simulate('click')
+    // Assert
+    expect(addVideoButton).toHaveLength(1);
+  });
 
-  // Assert
-  expect(addButton).toHaveLength(1)
-  expect(addVideo.calledOnce).toBe(true)
+  it('clicking the "Add Video" button calls the "addVideo()" action creator', () => {
+    // Setup
+    const addVideo = sinon.stub()
+    const appWrapper = shallow(<App view="video_list" addVideo={addVideo}/>)
+    const addButton = appWrapper.find(Button)
+
+    // Exercise
+    addButton.simulate('click')
+
+    // Assert
+    expect(addButton).toHaveLength(1)
+    expect(addVideo.calledOnce).toBe(true)
+  })
 })

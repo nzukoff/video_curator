@@ -6,5 +6,6 @@ ALTER TABLE videos
   ADD COLUMN definition       VARCHAR(64)     NULL,
   ADD COLUMN caption          VARCHAR(64)     NULL,
   ADD COLUMN licensed_content VARCHAR(64)     NULL,
-  ADD COLUMN projection       VARCHAR(64)     NULL
+  ADD COLUMN projection       VARCHAR(64)     NULL,
+  ADD COLUMN thumbnail        VARCHAR(64)     NULL
   AFTER modified;

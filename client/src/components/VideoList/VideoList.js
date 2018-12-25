@@ -8,7 +8,7 @@ export class VideoList extends Component {
   render() {
     return (
       <div className="VideoList">
-        {this.props.videos.map((video, i) => <Video key={video.id} index={video.id} title={video.title} />)}
+          {this.props.videos.map((video, i) => <Video key={video.id} index={i} />)}
       </div>
     )
   }
