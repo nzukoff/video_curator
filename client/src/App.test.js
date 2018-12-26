@@ -5,18 +5,22 @@ import { App } from './App';
 import VideoList from './components/VideoList/VideoList';
 import AddVideo from './components/AddVideo/AddVideo';
 import EditVideo from './components/EditVideo/EditVideo';
+import Header from './components/Header/Header'
 
 // import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import { createShallow } from '@material-ui/core/test-utils'
-import Button from '@material-ui/core/Button'
+import { createShallow, createMount } from '@material-ui/core/test-utils'
+import { AppBar, Toolbar, Typography, IconButton, Button } from '@material-ui/core'
+
 
 describe('App', () => {
-  let shallow;
+  let shallow
+  let mount
 
   beforeEach(() => {
-    shallow = createShallow();
+    shallow = createShallow()
+    mount = createMount()
   });
 
   it('displays a video list', () => {
@@ -28,7 +32,7 @@ describe('App', () => {
     expect(videoList).toHaveLength(1);
   });
 
-  it('displays an "Add Video" button', () => {
+  it('displays a header', () => {
     // Setup
     // const shallow = createShallow()
     
@@ -36,23 +40,9 @@ describe('App', () => {
       <App view="video_list"/>
     );
 
-    const addVideoButton = appWrapper.find(Button);
+    const header = appWrapper.find(Header);
 
     // Assert
-    expect(addVideoButton).toHaveLength(1);
+    expect(header).toHaveLength(1);
   });
-
-  it('clicking the "Add Video" button calls the "addVideo()" action creator', () => {
-    // Setup
-    const addVideo = sinon.stub()
-    const appWrapper = shallow(<App view="video_list" addVideo={addVideo}/>)
-    const addButton = appWrapper.find(Button)
-
-    // Exercise
-    addButton.simulate('click')
-
-    // Assert
-    expect(addButton).toHaveLength(1)
-    expect(addVideo.calledOnce).toBe(true)
-  })
 })

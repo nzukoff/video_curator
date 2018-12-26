@@ -142,6 +142,30 @@ describe('reducer', () => {
            )).toEqual(expected)
   })
 
+  it('should return state with embedded video', () => {
+    const initialState = {
+      view: 'video_list',
+      videos: [
+        {id: 1, title: 'Star Wars IV'},
+        {id: 2, title:'Star Trek II'}
+      ],
+    }
+
+    const expected = {
+      view: 'video_list',
+      videos: [
+        {id: 1, title: 'Star Wars IV', embedded:true},
+        {id: 2, title: 'Star Trek II'}
+      ]
+    }
+
+    expect(reducer(initialState, {
+                                   type: 'EMBED_VIDEO',
+                                   index: 0,
+                                 }
+           )).toEqual(expected)
+  })
+
   it('should return same video list and new view if new title is blank', () => {
     const initialState = {
       view: 'edit_video',

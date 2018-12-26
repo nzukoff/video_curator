@@ -24,6 +24,7 @@ public class Video {
     private String licensedContent;
     private String projection;
     private String thumbnail;
+    private String embedLink;
 
     @CreationTimestamp
     private Date created;
@@ -31,7 +32,7 @@ public class Video {
     @UpdateTimestamp
     private Date modified;
 
-    public Video(String title, String link, String ytID, String duration, String dimension, String definition, String caption, String licensedContent, String projection, String thumbnail) {
+    public Video(String title, String link, String ytID, String duration, String dimension, String definition, String caption, String licensedContent, String projection, String thumbnail, String embedLink) {
         this.title = title;
         this.link = link;
         this.ytID = ytID;
@@ -42,6 +43,7 @@ public class Video {
         this.licensedContent = licensedContent;
         this.projection = projection;
         this.thumbnail = thumbnail;
+        this.embedLink = embedLink;
         this.id = 0;
     }
 
@@ -145,6 +147,14 @@ public class Video {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getEmbedLink() {
+        return embedLink;
+    }
+
+    public void setEmbedLink(String embedLink) {
+        this.embedLink = embedLink;
     }
 
     public Date getCreated() {

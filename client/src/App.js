@@ -6,6 +6,7 @@ import './App.css';
 import VideoList from './components/VideoList/VideoList'
 import AddVideo from './components/AddVideo/AddVideo'
 import EditVideo from './components/EditVideo/EditVideo'
+import Header from './components/Header/Header'
 import { addVideo } from './actions/index'
 
 import Typography from '@material-ui/core/Typography'
@@ -24,20 +25,13 @@ export const App = (props) => {
     visible_content =
       <div>
         <VideoList />
-        <Button 
-          variant="contained"
-          onClick={() => props.addVideo()}>
-            Add Video
-        </Button>
       </div>
           
   }
 
   return(
     <div className="App">
-      <Typography variant="h2" gutterBottom>
-        World's Best Videos
-      </Typography>
+      <Header />
       {visible_content}
     </div>
   )

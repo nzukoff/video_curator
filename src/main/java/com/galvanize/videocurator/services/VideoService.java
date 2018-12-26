@@ -41,8 +41,9 @@ public class VideoService {
             String caption = response.getBody().getYtItems().get(0).getContentDetails().getCaption();
             String licensed_content = response.getBody().getYtItems().get(0).getContentDetails().getLicensedContent();
             String projection = response.getBody().getYtItems().get(0).getContentDetails().getProjection();
-            String thumbnail = String.format("https://i.ytimg.com/vi/%s/default.jpg", id);
-            Video newVideo = new Video(title, video.getLink(), video.getYtID(), duration, dimension, definition, caption, licensed_content, projection, thumbnail);
+            String thumbnail = String.format("https://i.ytimg.com/vi/%s/sddefault.jpg", id);
+            String embedLink = String.format("https://www.youtube.com/embed/%s", id);
+            Video newVideo = new Video(title, video.getLink(), video.getYtID(), duration, dimension, definition, caption, licensed_content, projection, thumbnail, embedLink);
             return(videoRepository.save(newVideo));
         } else {
             return new Video(-1);

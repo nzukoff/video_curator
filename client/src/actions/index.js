@@ -76,6 +76,11 @@ export const deletedVideo = (index) => ({
   index
 })
 
+export const embedVideo = (index) => ({
+  type: 'EMBED_VIDEO',
+  index
+})
+
 export const getVideoList = () => {
   return async (dispatch) => {
     const response = await fetch('/api/videos')
@@ -87,6 +92,7 @@ export const getVideoList = () => {
 
 export const gotVideoList = (videos) => ({
   type: 'GOT_VIDEOS',
+  view: 'video_list',
   videos
 })
 

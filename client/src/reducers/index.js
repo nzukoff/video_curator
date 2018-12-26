@@ -16,7 +16,8 @@ const rootReducer = (state = initialState, action) => {
     case 'GOT_VIDEOS':
       return {
         ...state,
-        videos: action.videos
+        videos: action.videos,
+        view: action.view
       }
 
     case 'SAVED_ADDED_VIDEO':
@@ -66,6 +67,19 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         view: action.view,
+        videos: newVideos
+      }
+
+    case 'EMBED_VIDEO':
+      newVideos = state.videos.map(video => {
+        if (video.id === action.index+1) {
+          return { ...video, embedded: !video.embedded }
+        } else {
+          return video
+        }
+      })
+      return {
+        ...state,
         videos: newVideos
       }
 

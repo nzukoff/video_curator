@@ -71,10 +71,20 @@ describe('actions', () => {
     const videos = [{title: 'Brazil'}]
     const expectedAction = {
       type: 'GOT_VIDEOS',
-      videos: [{title: 'Brazil'}]
+      videos: [{title: 'Brazil'}], 
+      view: "video_list"
     }
 
     expect(actions.gotVideoList(videos)).toEqual(expectedAction)
+  })
+
+  it('should create an action to embed a video', () => {
+    const expectedAction = {
+      type: 'EMBED_VIDEO',
+      index: 1
+    }
+
+    expect(actions.embedVideo(1)).toEqual(expectedAction)
   })
 })
 
@@ -97,7 +107,7 @@ describe('async actions', () => {
                               })
 
     const expectedActions = [
-      { type: 'GOT_VIDEOS', videos: [ { duration: "00:00", timeSince: "NaN day", title: "The Graduate" } ] }
+      { type: 'GOT_VIDEOS', videos: [ { duration: "00:00", timeSince: "NaN day", title: "The Graduate" } ], view: "video_list" }
     ]
 
     const store = mockStore()

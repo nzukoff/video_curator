@@ -71,24 +71,25 @@ public class VideoCuratorAT extends FluentTest {
     @Test
     public void testHomePage() {
         goTo("http://localhost:" + this.port + "/");
-        await().until(() -> $("h2").present());
-        assertThat($("h2").text()).isEqualTo("World's Best Videos");
+        await().until(() -> $("h5").present());
+        assertThat($("h5").text()).isEqualTo("World's Best Videos");
     }
 
     @Test
     public void testAddVideo() {
         goTo("http://localhost:" + this.port + "/");
-        await().until(() -> $("button").present());
-        assertThat($("button").text()).isEqualTo("ADD VIDEO");
-        $("button").click();
+        await().until(() -> $("#AddButton").present());
+//        assertThat($("#AddButton").text()).isEqualTo("");
+        $("#AddButton").click();
 
         await().until(() -> $("input").present());
-        await().until(() -> $("button").present());
-        assertThat($("button").text()).isEqualTo("Add");
+        await().until(() -> $("#CancelAddVideoButton").present());
+        assertThat($("#CancelAddVideoButton").text()).isEqualTo("CANCEL");
+        assertThat($("#AddVideoButton").text()).isEqualTo("ADD VIDEO");
 
         $("input").get(0).fill().with("Lethal Weapon");
         $("input").get(1).fill().with("https://www.youtube.com/watch?v=7dw45dGMGNY");
-        $("button").click();
+        $("#AddVideoButton").click();
 
         await().until(() -> $("a").present());
         assertThat($("a").text()).isEqualTo("Lethal Weapon - [03:21]");
