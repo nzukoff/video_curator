@@ -95,6 +95,39 @@ public class VideoCuratorAT extends FluentTest {
         assertThat($("a").text()).isEqualTo("Lethal Weapon - [03:21]");
     }
 
+    @Test
+    public void upvoteVideo() {
+        Video video = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        videoRepository.save(video);
+        goTo("http://localhost:" + this.port + "/");
+        await().until(() -> $("#UpvoteButton").present());
+        assertThat($("#VideoVotes").text()).isEqualTo("0");
+        $("#UpvoteButton").click();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertThat($("#VideoVotes").text()).isEqualTo("1");
+    }
+
+    @Test
+    public void downvoteVideo() {
+        Video video = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        video.setVotes(2);
+        videoRepository.save(video);
+        goTo("http://localhost:" + this.port + "/");
+        await().until(() -> $("#DownvoteButton").present());
+        assertThat($("#VideoVotes").text()).isEqualTo("2");
+        $("#DownvoteButton").click();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertThat($("#VideoVotes").text()).isEqualTo("1");
+    }
+
 //    @Test
 //    public void testEditVideo() {
 //        // Setup

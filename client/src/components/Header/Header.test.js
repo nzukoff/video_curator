@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import VideoList from './components/VideoList/VideoList';
-// import AddVideo from './components/AddVideo/AddVideo';
 import { Header } from './Header';
 
 // import { shallow } from 'enzyme';

@@ -87,6 +87,61 @@ public class VideoControllerIT {
         );
     }
 
+    @Test
+    public void shouldUpvoteVideo() throws Exception {
+        // Setup
+//        String newVideo = "{\"title\":\"Dean Town\",\"link\":\"https://www.youtube.com/watch?v=hAn-DWwHu6E\",\"ytID\":\"hAn-DWwHu6E\"}";
+        Video expected = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        videoRepository.save(expected);
+        expected.setVotes(1);
+
+
+        // Exercise
+        String response = mvc.perform(put(String.format("/api/videos/%s/upvote", expected.getId()))
+//                .content(newVideo)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // Assert
+        List<Video> videos = videoRepository.findAllByOrderByIdAsc();
+        assertEquals(1, videos.size());
+        assertEquals(
+                mapper.writeValueAsString(expected.getVotes()),
+                mapper.writeValueAsString(videos.get(0).getVotes())
+        );
+    }
+
+    @Test
+    public void shouldDownvoteVideo() throws Exception {
+        // Setup
+//        String newVideo = "{\"title\":\"Dean Town\",\"link\":\"https://www.youtube.com/watch?v=hAn-DWwHu6E\",\"ytID\":\"hAn-DWwHu6E\"}";
+        Video expected = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        expected.setVotes(2);
+        videoRepository.save(expected);
+        expected.setVotes(1);
+
+
+        // Exercise
+        String response = mvc.perform(put(String.format("/api/videos/%s/downvote", expected.getId()))
+//                .content(newVideo)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // Assert
+        List<Video> videos = videoRepository.findAllByOrderByIdAsc();
+        assertEquals(1, videos.size());
+        assertEquals(
+                mapper.writeValueAsString(expected.getVotes()),
+                mapper.writeValueAsString(videos.get(0).getVotes())
+        );
+    }
+
 //    @Test
 //    public void shouldEditVideos() throws Exception {
 //        // Setup

@@ -86,6 +86,16 @@ describe('actions', () => {
 
     expect(actions.embedVideo(1)).toEqual(expectedAction)
   })
+
+  it('should create an action to save a vote', () => {
+    const expectedAction = {
+      type: 'CASTED_VOTE',
+      index: 1,
+      votes: 10
+    }
+
+    expect(actions.castedVote(1, 10)).toEqual(expectedAction)
+  })
 })
 
 describe('async actions', () => {
@@ -185,6 +195,58 @@ describe('async actions', () => {
 
     // Exercise
     await store.dispatch(actions.deleteVideo(1))
+    expect(store.getActions()).toEqual(expectedActions)
+  })
+
+  it('should create CASTED_VOTE with upvote when an upvote has been casted', async () => {
+    // Setup
+    fetchMock
+      .putOnce('/api/videos/1/upvote', {
+                                  body: {
+                                    id: 1,
+                                    votes: 10
+                                  },
+                                  headers: {
+                                    'content-type': 'application/json'
+                                  }
+                                })
+
+    const expectedActions = [{
+        type: 'CASTED_VOTE',
+        index: 1,
+        votes: 10
+    }]
+
+    const store = mockStore()
+
+    // Exercise
+    await store.dispatch(actions.castVote(1, "upvote"))
+    expect(store.getActions()).toEqual(expectedActions)
+  })
+
+  it('should create CASTED_VOTE with downvote when an downvote has been casted', async () => {
+    // Setup
+    fetchMock
+      .putOnce('/api/videos/1/downvote', {
+                                  body: {
+                                    id: 1,
+                                    votes: 10
+                                  },
+                                  headers: {
+                                    'content-type': 'application/json'
+                                  }
+                                })
+
+    const expectedActions = [{
+        type: 'CASTED_VOTE',
+        index: 1,
+        votes: 10
+    }]
+
+    const store = mockStore()
+
+    // Exercise
+    await store.dispatch(actions.castVote(1, "downvote"))
     expect(store.getActions()).toEqual(expectedActions)
   })
 })

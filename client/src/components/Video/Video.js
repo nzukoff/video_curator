@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 
 import { editVideo, embedVideo } from '../../actions/index'
 
-import { Paper, Typography, Grid, IconButton } from '@material-ui/core'
+import Counter from '../Counter/Counter'
+
+import { Paper, Typography, Grid, IconButton, Button } from '@material-ui/core'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -19,11 +21,6 @@ const styles = theme => ({
     display: 'flex',
     width: '180px',
   },
-  container: {
-    display: 'flex',
-    height: '100%',
-    flex: '1 100%',
-  },
   iframe: {
     paddingTop: theme.spacing.unit * 4,
   },
@@ -37,35 +34,58 @@ const styles = theme => ({
     height: 30,
     width: 30,
   },
+  voting: {
+    "&:hover": {
+      backgroundColor: "#fff"
+    },
+  }
 })
 
 export const Video = (props) => {
+    const video = props.videos.find(video => video.id===props.index)
+    const copyToClipboard = () => {
+      const el = document.createElement('textarea');
+      el.value = video.link;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
     const { classes } = props
     return (
       <div className="Video">
         <Paper className={classes.paper} elevation={1}>
-          <Grid container>
-            <Grid item xs={12} md={3}>
-              <img className={classes.thumbnail} src={props.videos[props.index].thumbnail} onClick={() => props.embedVideo(props.index)}/>
+          <Grid container >
+            <Grid container item xs={2} md={1}  direction="column">
+              <Counter id={video.id}/>
             </Grid>
-            <Grid item xs={12} md={9}>
-              <Typography variant="h6" component="a" href={props.videos[props.index].link} style={{textDecoration:'none', paddingTop:'10px'}}>
-                {`${props.videos[props.index].title} - [${props.videos[props.index].duration}]`}
+            <Grid container item xs={10} md={3} alignItems="center" justify="center">
+              <img className={classes.thumbnail} src={video.thumbnail} onClick={() => props.embedVideo(props.index)}/>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Typography variant="h6" component="a" href={video.link} style={{textDecoration:'none', paddingTop:'10px'}}>
+                {`${video.title} - [${video.duration}]`}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary" component="h3">
-                {`Submitted ${props.videos[props.index].timeSince} ago`}
+                {`Submitted ${video.timeSince} ago`}
               </Typography>
               <div className={classes.controls}>
                 <IconButton aria-label="Play/pause" onClick={() => props.embedVideo(props.index)}>
                   <PlayArrowIcon className={classes.playIcon}/>
                 </IconButton>
+                <Button onClick={() => copyToClipboard()} id="CopyLink">
+                  Copy Link
+                </Button>
               </div>
             </Grid>             
           </Grid>
           <Grid container className={classes.container}>
             <Grid item md={3}></Grid>
             <Grid item xs={12} md={6}>
-              {props.videos[props.index].embedded ? <div className={classes.iframe}><iframe width="560" height="315" src={props.videos[props.index].embedLink} frameBorder="0" allowFullScreen></iframe></div>: <div></div>}
+              {video.embedded ? <div className={classes.iframe}><iframe width="560" height="315" src={video.embedLink} frameBorder="0" allowFullScreen></iframe></div>: <div></div>}
             </Grid>
             <Grid item md={3}></Grid>
           </Grid>

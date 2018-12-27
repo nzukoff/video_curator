@@ -72,8 +72,8 @@ const rootReducer = (state = initialState, action) => {
 
     case 'EMBED_VIDEO':
       newVideos = state.videos.map(video => {
-        if (video.id === action.index+1) {
-          return { ...video, embedded: !video.embedded }
+        if (video.id === action.index) {
+          return { ...video, embedded: !video.embedded}
         } else {
           return video
         }
@@ -83,6 +83,19 @@ const rootReducer = (state = initialState, action) => {
         videos: newVideos
       }
 
+      case 'CASTED_VOTE':
+        newVideos = state.videos.map(video => {
+          if (video.id === action.index) {
+            return { ...video, votes: action.votes}
+          } else {
+            return video
+          }
+        })
+        return {
+          ...state,
+          videos: newVideos
+        }
+    
     default:
       return (state)
   }

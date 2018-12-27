@@ -38,6 +38,15 @@ class VideoController {
         return videoService.editVideo(video, id);
     }
 
+    @PutMapping("/api/videos/{id}/{vote}")
+    public Video increaseVotes(@PathVariable int id, @PathVariable String vote) {
+        if (vote.equals("upvote")) {
+            return this.videoService.increaseVotes(id);
+        } else {
+            return this.videoService.decreaseVotes(id);
+        }
+    }
+
     @DeleteMapping("/api/videos/{id}")
     public void deleteVideo(@PathVariable int id) {
         videoService.deleteVideo(id);

@@ -25,6 +25,7 @@ public class Video {
     private String projection;
     private String thumbnail;
     private String embedLink;
+    private Integer votes;
 
     @CreationTimestamp
     private Date created;
@@ -44,18 +45,21 @@ public class Video {
         this.projection = projection;
         this.thumbnail = thumbnail;
         this.embedLink = embedLink;
+        this.votes = 0;
         this.id = 0;
     }
 
     public Video(int index) {
         this.title = "";
         this.id = index;
+        this.votes = 0;
     }
 
     public Video(String title, String link, String ytID) {
         this.title = title;
         this.link = link;
         this.ytID = ytID;
+        this.votes = 0;
     }
 
     public Video() {
@@ -155,6 +159,14 @@ public class Video {
 
     public void setEmbedLink(String embedLink) {
         this.embedLink = embedLink;
+    }
+
+    public Integer getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Integer votes) {
+        this.votes = votes;
     }
 
     public Date getCreated() {

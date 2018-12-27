@@ -161,7 +161,7 @@ describe('reducer', () => {
 
     expect(reducer(initialState, {
                                    type: 'EMBED_VIDEO',
-                                   index: 0,
+                                   index: 1,
                                  }
            )).toEqual(expected)
   })
@@ -216,6 +216,31 @@ describe('reducer', () => {
                                    type: 'DELETED_VIDEO',
                                    view: 'video_list',
                                    index: 2
+                                 }
+           )).toEqual(expected)
+  })
+
+  it('should return state with votes for a video', () => {
+    const initialState = {
+      view: 'video_list',
+      videos: [
+        {id: 1, title: 'Star Wars IV'},
+        {id: 2, title:'Star Trek II'}
+      ],
+    }
+
+    const expected = {
+      view: 'video_list',
+      videos: [
+        {id: 1, title: 'Star Wars IV', votes:10},
+        {id: 2, title: 'Star Trek II'}
+      ]
+    }
+
+    expect(reducer(initialState, {
+                                   type: 'CASTED_VOTE',
+                                   index: 1,
+                                   votes: 10
                                  }
            )).toEqual(expected)
   })

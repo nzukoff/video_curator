@@ -172,4 +172,50 @@ public class VideoServiceUT {
         // Assert
         verify(this.videoRepository).deleteById(3);
     }
+
+    @Test
+    public void shouldIncreaseVideoVotes() throws Exception {
+        // Setup
+        Video origVideo = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        origVideo.setId(3);
+        origVideo.setVotes(3);
+
+        Video video = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        video.setId(3);
+        origVideo.setVotes(4);
+
+        when(this.videoRepository.findOneById(anyInt())).thenReturn(origVideo);
+        when(this.videoRepository.save(Mockito.any(Video.class))).thenReturn(video);
+
+        // Exercise
+        Video returnedVideo = this.videoService.increaseVotes(3);
+
+        // Assert
+        verify(this.videoRepository).findOneById(3);
+        verify(this.videoRepository).save(argThat(vid -> vid.getId() == 3));
+        assertEquals(returnedVideo.getVotes(), video.getVotes());
+    }
+
+    @Test
+    public void shouldDecreaseVideoVotes() throws Exception {
+        // Setup
+        Video origVideo = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        origVideo.setId(3);
+        origVideo.setVotes(3);
+
+        Video video = new Video("Dean Town", "https://www.youtube.com/watch?v=hAn-DWwHu6E", "hAn-DWwHu6E");
+        video.setId(3);
+        origVideo.setVotes(2);
+
+        when(this.videoRepository.findOneById(anyInt())).thenReturn(origVideo);
+        when(this.videoRepository.save(Mockito.any(Video.class))).thenReturn(video);
+
+        // Exercise
+        Video returnedVideo = this.videoService.decreaseVotes(3);
+
+        // Assert
+        verify(this.videoRepository).findOneById(3);
+        verify(this.videoRepository).save(argThat(vid -> vid.getId() == 3));
+        assertEquals(returnedVideo.getVotes(), video.getVotes());
+    }
 }

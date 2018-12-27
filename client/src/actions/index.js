@@ -128,3 +128,23 @@ const updateVideos = (videos) => {
     return {...video, timeSince: timeSince, duration: duration}
   })
 }
+
+export const castVote = (index, vote) => {
+  return async (dispatch) => {
+    const response = await fetch(`/api/videos/${index}/${vote}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // body: JSON.stringify({ id: index, title: title })
+    })
+    const video = await response.json()
+    dispatch(castedVote(video.id, video.votes))
+  }
+}
+
+export const castedVote = (index, votes) => ({
+  type: 'CASTED_VOTE',
+  index,
+  votes
+})

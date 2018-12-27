@@ -64,4 +64,18 @@ public class VideoService {
     public void deleteVideo(int id) {
         videoRepository.deleteById(id);
     }
+
+    public Video increaseVotes(int id) {
+        Video video = this.videoRepository.findOneById(id);
+        int votes = video.getVotes();
+        video.setVotes(votes+1);
+        return this.videoRepository.save(video);
+    }
+
+    public Video decreaseVotes(int id) {
+        Video video = this.videoRepository.findOneById(id);
+        int votes = video.getVotes();
+        video.setVotes(votes-1);
+        return this.videoRepository.save(video);
+    }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -66,6 +67,26 @@ public class VideoControllerUT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", is("Dean Town")));
+    }
+
+    @Test
+    public void shouldIncreaseVotes() throws Exception {
+        // Exercise
+        this.mvc.perform(put("/api/videos/1/upvote")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(this.videoService, times(1)).increaseVotes(anyInt());
+    }
+
+    @Test
+    public void shouldDecreaseVotes() throws Exception {
+        // Exercise
+        this.mvc.perform(put("/api/videos/1/downvote")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(this.videoService, times(1)).decreaseVotes(anyInt());
     }
 
 //    @Test

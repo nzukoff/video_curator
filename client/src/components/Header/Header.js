@@ -11,6 +11,7 @@ const styles = theme => ({
     root: {
         flexGrow: 1,
         backgroundColor: 'white',
+        marginBottom: theme.spacing.unit * 4,
     },
     grow: {
         flexGrow: 1,
