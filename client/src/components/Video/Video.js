@@ -43,14 +43,34 @@ const styles = theme => ({
 
 export const Video = (props) => {
     const video = props.videos.find(video => video.id===props.index)
+    // const createTextArea = () => {
+    //   const el = document.createElement('textarea')
+    //   el.value = video.link
+    //   el.setAttribute('readonly', '')
+    //   el.style.position = 'absolute'
+    //   el.style.left = '-9999px'
+    //   document.body.appendChild(el)
+    // }
+    // const isOS = () => {
+    //   return navigator.userAgent.match(/ipad|iphone/i)
+    // }
     const copyToClipboard = () => {
-      const el = document.createElement('textarea');
-      el.value = video.link;
-      el.setAttribute('readonly', '');
-      el.style.position = 'absolute';
-      el.style.left = '-9999px';
-      document.body.appendChild(el);
-      el.select();
+      const el = document.createElement('textarea')
+      el.value = video.link
+      el.setAttribute('readonly', '')
+      el.style.position = 'absolute'
+      el.style.left = '-9999px'
+      document.body.appendChild(el)
+      if (navigator.userAgent.match(/ipad|iphone/i)) {
+        let range = document.createRange()
+        range.selectNodeContents(el)
+        let selection = window.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+        el.setSelectionRange(0, 999999)
+      } else {
+        el.select()
+      }
       document.execCommand('copy');
       document.body.removeChild(el);
     }
