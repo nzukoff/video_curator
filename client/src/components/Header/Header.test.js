@@ -38,7 +38,7 @@ describe('Header', () => {
       }}`
     const addVideo = sinon.stub()
     const headerWrapper = shallow(<Header addVideo={addVideo} classes={classes} />)
-    const addButton = headerWrapper.find(Toolbar).find(IconButton)
+    const addButton = headerWrapper.find(Toolbar).find('#AddButton')
 
     // Exercise
     addButton.simulate('click')
@@ -48,5 +48,42 @@ describe('Header', () => {
     expect(addVideo.calledOnce).toBe(true)
   })
 
+  it('clicking the sort button "Most Voted" calls the "sortVideos()" action creator', () => {
+    // Setup
+    const classes = `{root: {
+        marginLeft: '10%',
+        marginRight: '10%',
+      }}`
+    const sortVideos = sinon.stub()
+    const headerWrapper = shallow(<Header sortVideos={sortVideos} classes={classes} />)
+    const sortVotedButton = headerWrapper.find('#SortVoted')
+
+    // Exercise
+    sortVotedButton.simulate('click')
+
+    // Assert
+    expect(sortVotedButton).toHaveLength(1)
+    expect(sortVideos.calledOnce).toBe(true)
+    expect(sortVideos.calledWith('voted')).toBe(true)
+  })
+
+  it('clicking the sort button "Most Recent" calls the "sortVideos()" action creator', () => {
+    // Setup
+    const classes = `{root: {
+        marginLeft: '10%',
+        marginRight: '10%',
+      }}`
+    const sortVideos = sinon.stub()
+    const headerWrapper = shallow(<Header sortVideos={sortVideos} classes={classes} />)
+    const sortVotedButton = headerWrapper.find('#SortRecent')
+
+    // Exercise
+    sortVotedButton.simulate('click')
+
+    // Assert
+    expect(sortVotedButton).toHaveLength(1)
+    expect(sortVideos.calledOnce).toBe(true)
+    expect(sortVideos.calledWith('recent')).toBe(true)
+  })
 
 })

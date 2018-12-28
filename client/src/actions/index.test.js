@@ -96,6 +96,24 @@ describe('actions', () => {
 
     expect(actions.castedVote(1, 10)).toEqual(expectedAction)
   })
+
+  it('should create an action to copy a video', () => {
+    const expectedAction = {
+      type: 'COPIED_TO_CLIPBOARD',
+      id: 1
+    }
+
+    expect(actions.copiedToClipboard(1)).toEqual(expectedAction)
+  })
+
+  it('should create an action to changed the sorting of the videos', () => {
+    const expectedAction = {
+      type: 'SORT_VIDEOS',
+      sortBy: 'voted'
+    }
+
+    expect(actions.sortVideos('voted')).toEqual(expectedAction)
+  })
 })
 
 describe('async actions', () => {
@@ -249,4 +267,18 @@ describe('async actions', () => {
     await store.dispatch(actions.castVote(1, "downvote"))
     expect(store.getActions()).toEqual(expectedActions)
   })
+
+  // it('should create COPIED_TO_CLIPBOARD when video has been copied', async () => {
+  //   // Setup
+  //   // NEED TO MOCK DOCUMENT
+  //   const expectedActions = [{
+  //       type: 'COPIED_TO_CLIPBOARD',
+  //       id: 1
+  //   }]
+  //   const store = mockStore()
+  //
+  //   // Exercise
+  //   await store.dispatch(actions.copyToClipboard(1, "https://www.youtube.com/watch?v=hAn-DWwHu6E"))
+  //   expect(store.getActions()).toEqual(expectedActions)
+  // })
 })

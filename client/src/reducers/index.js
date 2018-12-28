@@ -6,6 +6,21 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   let newVideos
 
+  const sortVideos = (sortBy, videos) => {
+    console.log("SORT BY PASSED INTO SORT VIDEO IS ", sortBy)
+    if (sortBy === 'voted') {
+      return [...state.videos].sort((v1, v2) => parseInt(v2.votes) - parseInt(v1.votes))
+    } else if (sortBy === 'recent') {
+      return [...state.videos].sort((v1, v2) => {
+        if (new Date(v2.created) > new Date(v1.created)) {
+          return 1
+        } else {
+          return -1
+        }
+      })
+    }
+  }
+
   switch (action.type) {
     case 'ADD_VIDEO':
       return {
@@ -83,18 +98,50 @@ const rootReducer = (state = initialState, action) => {
         videos: newVideos
       }
 
-      case 'CASTED_VOTE':
-        newVideos = state.videos.map(video => {
-          if (video.id === action.index) {
-            return { ...video, votes: action.votes}
+    case 'CASTED_VOTE':
+      newVideos = state.videos.map(video => {
+        if (video.id === action.index) {
+          return { ...video, votes: action.votes}
+        } else {
+          return video
+        }
+      })
+      return {
+        ...state,
+        videos: newVideos
+      }
+
+    case 'COPIED_TO_CLIPBOARD':
+      newVideos = state.videos.map(video => {
+        if (video.id === action.id) {
+          return { ...video, copied: true}
+        } else {
+          return video
+        }
+      })
+      return {
+        ...state,
+        videos: newVideos
+      }
+
+    case 'SORT_VIDEOS':
+      if (action.sortBy === 'voted') {
+        newVideos = [...state.videos].sort((v1, v2) => parseInt(v2.votes) - parseInt(v1.votes))
+      } else if (action.sortBy === 'recent') {
+        newVideos = [...state.videos].sort((v1, v2) => {
+          if (new Date(v2.created) > new Date(v1.created)) {
+            return 1
           } else {
-            return video
+            return -1
           }
         })
-        return {
-          ...state,
-          videos: newVideos
-        }
+      }
+  
+      return {
+        ...state,
+        videos: newVideos,
+        sortedBy: action.sortBy
+      }
     
     default:
       return (state)

@@ -15,9 +15,19 @@ const styles = theme => ({
   controls: {
     textAlign: 'center',
   },
-  voteIcon: {
+  voteButton: {
     "&:hover": {
       backgroundColor: "#fff"
+    },
+  },
+  voteIcon: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '.80rem',
+    },
+  },
+  voteCount: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '.75rem',
     },
   }
 })
@@ -27,14 +37,14 @@ export const Counter = (props) => {
     const video = props.videos.find(video => video.id===props.id)
     return (
       <div className={classes.controls}>        
-        <IconButton onClick={() => props.castVote(video.id, "upvote")} id="UpvoteButton" className={classes.voteIcon}>
-            <ExpandLess />
+        <IconButton onClick={() => props.castVote(video.id, "upvote")} id="UpvoteButton" className={classes.voteButton}>
+            <ExpandLess className={classes.voteIcon}/>
         </IconButton>
-        <Typography variant="subtitle1" color="textSecondary" component="h3" id="VideoVotes" >
+        <Typography variant="subtitle1" color="textSecondary" component="h3" id="VideoVotes" className={classes.voteCount}>
             {video.votes}
         </Typography>
-        <IconButton onClick={() => props.castVote(video.id, "downvote")} id="DownvoteButton" className={classes.voteIcon}>
-            <ExpandMore />
+        <IconButton onClick={() => props.castVote(video.id, "downvote")} id="DownvoteButton" className={classes.voteButton}>
+            <ExpandMore className={classes.voteIcon}/>
         </IconButton>            
       </div>
     )

@@ -128,6 +128,155 @@ public class VideoCuratorAT extends FluentTest {
         assertThat($("#VideoVotes").text()).isEqualTo("1");
     }
 
+    @Test
+    public void testSortVideoByRecent() {
+        Video video1 = new Video("Dean Town",
+                "https://www.youtube.com/watch?v=hAn-DWwHu6E",
+                "hAn-DWwHu6E",
+                "PT5M57S",
+                "2d",
+                "hd",
+                "false",
+                "true",
+                "rectangular",
+                "https://i.ytimg.com/vi/hAn-DWwHu6E/sddefault.jpg",
+                "https://www.youtube.com/embed/hAn-DWwHu6E"
+                );
+        video1.setVotes(4);
+        videoRepository.save(video1);
+        Video video2 = new Video("A Star is Born",
+                "https://www.youtube.com/watch?v=qokXWHEViVc",
+                "qokXWHEViVc",
+                "PT2M15S",
+                "2d",
+                "hd",
+                "false",
+                "false",
+                "rectangular",
+                "https://i.ytimg.com/vi/qokXWHEViVc/sddefault.jpg",
+                "https://www.youtube.com/embed/qokXWHEViVc"
+        );
+        video2.setVotes(2);
+        videoRepository.save(video2);
+        goTo("http://localhost:" + this.port + "/");
+
+        await().until(() -> $("a").present());
+        assertThat($("a").get(0).text()).isEqualTo("Dean Town - [05:57]");
+
+        await().until(() -> $("#SortButton").present());
+        $("#SortButton").click();
+
+        await().until(() -> $("#SortRecent").present());
+        assertThat($("#SortRecent").text()).isEqualTo("Most Recent");
+
+        $("#SortRecent").click();
+
+        await().until(() -> $("a").present());
+        assertThat($("a").get(0).text()).isEqualTo("A Star is Born - [02:15]");
+    }
+
+    @Test
+    public void testSortVideoByVoted() {
+        Video video1 = new Video("Dean Town",
+                "https://www.youtube.com/watch?v=hAn-DWwHu6E",
+                "hAn-DWwHu6E",
+                "PT5M57S",
+                "2d",
+                "hd",
+                "false",
+                "true",
+                "rectangular",
+                "https://i.ytimg.com/vi/hAn-DWwHu6E/sddefault.jpg",
+                "https://www.youtube.com/embed/hAn-DWwHu6E"
+        );
+        video1.setVotes(3);
+        videoRepository.save(video1);
+        Video video2 = new Video("A Star is Born",
+                "https://www.youtube.com/watch?v=qokXWHEViVc",
+                "qokXWHEViVc",
+                "PT2M15S",
+                "2d",
+                "hd",
+                "false",
+                "false",
+                "rectangular",
+                "https://i.ytimg.com/vi/qokXWHEViVc/sddefault.jpg",
+                "https://www.youtube.com/embed/qokXWHEViVc"
+        );
+        video2.setVotes(2);
+        videoRepository.save(video2);
+        goTo("http://localhost:" + this.port + "/");
+
+        await().until(() -> $("a").present());
+        assertThat($("a").get(0).text()).isEqualTo("Dean Town - [05:57]");
+
+        $("#UpvoteButton").get(1).click();
+        $("#UpvoteButton").get(1).click();
+
+        $("#SortButton").click();
+
+        await().until(() -> $("#SortVoted").present());
+        assertThat($("#SortVoted").text()).isEqualTo("Most Voted");
+
+        $("#SortVoted").click();
+
+        await().until(() -> $("a").present());
+        assertThat($("a").get(0).text()).isEqualTo("A Star is Born - [02:15]");
+    }
+
+    @Test
+    public void testShowVideoFromThumbnail() {
+        Video video = new Video("Dean Town",
+                "https://www.youtube.com/watch?v=hAn-DWwHu6E",
+                "hAn-DWwHu6E",
+                "PT5M57S",
+                "2d",
+                "hd",
+                "false",
+                "true",
+                "rectangular",
+                "https://i.ytimg.com/vi/hAn-DWwHu6E/sddefault.jpg",
+                "https://www.youtube.com/embed/hAn-DWwHu6E"
+        );
+        videoRepository.save(video);
+
+        goTo("http://localhost:" + this.port + "/");
+
+        await().until(() -> $("a").present());
+        assertThat($("a").get(0).text()).isEqualTo("Dean Town - [05:57]");
+
+        $("#VideoThumbnail").click();
+
+        await().until(() -> $("#Iframe").present());
+    }
+
+    @Test
+    public void testShowVideoFromPlayButton() {
+        Video video = new Video("Dean Town",
+                "https://www.youtube.com/watch?v=hAn-DWwHu6E",
+                "hAn-DWwHu6E",
+                "PT5M57S",
+                "2d",
+                "hd",
+                "false",
+                "true",
+                "rectangular",
+                "https://i.ytimg.com/vi/hAn-DWwHu6E/sddefault.jpg",
+                "https://www.youtube.com/embed/hAn-DWwHu6E"
+        );
+        videoRepository.save(video);
+
+        goTo("http://localhost:" + this.port + "/");
+
+        await().until(() -> $("a").present());
+        assertThat($("a").get(0).text()).isEqualTo("Dean Town - [05:57]");
+
+        $("#PlayButton").click();
+
+        await().until(() -> $("#Iframe").present());
+    }
+
+
 //    @Test
 //    public void testEditVideo() {
 //        // Setup

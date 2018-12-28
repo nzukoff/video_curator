@@ -148,3 +148,37 @@ export const castedVote = (index, votes) => ({
   index,
   votes
 })
+
+export const copyToClipboard = (id, link) => {
+  return async (dispatch) => {
+    const el = document.createElement('textarea')
+    el.value = link
+    el.setAttribute('readonly', '')
+    el.style.position = 'absolute'
+    el.style.left = '-9999px'
+    document.body.appendChild(el)
+    if (navigator.userAgent.match(/ipad|iphone/i)) {
+      let range = document.createRange()
+      range.selectNodeContents(el)
+      let selection = window.getSelection()
+      selection.removeAllRanges()
+      selection.addRange(range)
+      el.setSelectionRange(0, 999999)
+    } else {
+      el.select()
+    }
+    document.execCommand('copy')
+    document.body.removeChild(el)
+    dispatch(copiedToClipboard(id))
+  }
+}
+
+export const copiedToClipboard = (id) => ({
+  type: 'COPIED_TO_CLIPBOARD',
+  id
+})
+
+export const sortVideos = (sortBy) => ({
+  type: 'SORT_VIDEOS',
+  sortBy
+})

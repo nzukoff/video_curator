@@ -1,13 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Video } from './Video';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
 import Counter from '../Counter/Counter'
+import VideoDisplay from '../VideoDisplay/VideoDisplay'
 
 import { createShallow } from '@material-ui/core/test-utils'
-import { Paper, Typography, Grid, IconButton } from '@material-ui/core'
+import { Paper, Grid, Card, CardMedia } from '@material-ui/core'
 
 describe('Video Component', () => {
   let shallow
@@ -15,7 +15,7 @@ describe('Video Component', () => {
   let classes
 
   beforeEach(() => {
-    shallow = createShallow();
+    shallow = createShallow()
     videos = [{ 
       id: 1,
       title: "Dean Town",
@@ -30,84 +30,74 @@ describe('Video Component', () => {
       thumbnail: "https://i.ytimg.com/vi/hAn-DWwHu6E/default.jpg",
       created: "2018-12-25T06:05:18.000+0000",
       modified: "2018-12-25T06:05:18.000+0000",
-      timeSince: "16 hours ",
-      embedded: "false"
+      timeSince: "16 hours",
+      embedded: false
     }]
-    classes = `{root: {
+    classes = `{paper: {
       marginLeft: '10%',
       marginRight: '10%',
-    }}`
+      marginTop: theme.spacing.unit * 4,
+    },}`
   });
-
-  it('displays video title', () => {
-    const videoWrapper = shallow(<Video index={1} classes={classes} videos={videos}/>);
-    const displayedTitle = videoWrapper.find(Paper).find(Grid).at(3).find(Typography).at(0).childAt(0)
-    expect(displayedTitle).toHaveLength(1);
-    expect(displayedTitle.text()).toBe('Dean Town - [05:57]')
-  })
 
   it('displays video thumbnail', () => {
     const videoWrapper = shallow(<Video index={1} classes={classes} videos={videos}/>);
-    const displayedThumbnail = videoWrapper.find(Paper).find(Grid).at(2).find('img')
-    expect(displayedThumbnail).toHaveLength(1);
+    const displayedThumbnail = videoWrapper.find(Paper).find(Grid).at(2).find(CardMedia)
+    expect(displayedThumbnail).toHaveLength(1)
+    expect(displayedThumbnail.prop('image')).toBe('https://i.ytimg.com/vi/hAn-DWwHu6E/default.jpg')
+    expect(displayedThumbnail.prop('component')).toBe('img')
   })
 
   it('displays a video counter', () => {
     const videoWrapper = shallow(<Video index={1} classes={classes} videos={videos}/>);
     const counter = videoWrapper.find(Paper).find(Grid).at(1).find(Counter)
-    expect(counter).toHaveLength(1);
+    expect(counter).toHaveLength(1)
   })
 
-  it('clicking the play button calls the embedVideo() action creator', () => {
+  it('displays a video display', () => {
+    const videoWrapper = shallow(<Video index={1} classes={classes} videos={videos}/>);
+    const videoDisplay = videoWrapper.find(Paper).find(Grid).at(4).find(VideoDisplay)
+    expect(videoDisplay).toHaveLength(1)
+  })
+
+  it('does not contain an iframe when embedded is false for a video', () => {
     // Setup
-    const embedVideo = sinon.stub()
-    const videoWrapper = shallow(<Video index={1} classes={classes} videos={videos} embedVideo={embedVideo}/>);
-    const playButton = videoWrapper.find(Paper).find(Grid).at(3).find(IconButton)
-
-    // const iframe = videoWrapper.find(Paper).find(Grid).at(5).find('div').find('iframe')
-
-    // Exercise
-    playButton.simulate('click')
+    const videoWrapper = shallow(<Video index={1} classes={classes} videos={videos}/>)
+    const iframe = videoWrapper.find(Paper).find(Grid).at(5).find(Card)
 
     // Assert
-    expect(embedVideo.calledOnce).toBe(true)
-    expect(embedVideo.calledWith(1)).toBe(true)
+    expect(iframe).toHaveLength(0);
   })
 
-  // it('does not contain an iframe when embedded is false for a video', () => {
-  //   // Setup
-  //   const videoWrapper = shallow(<Video index={0} classes={classes} videos={videos}/>)
-  //   const iframe = videoWrapper.find(Paper).find(Grid).at(5).childAt(0).childAt(0)
+  it('contains an iframe when embedded is true for a video', () => {
+    // Setup
+    videos = [{ 
+      id: 1,
+      title: "Dean Town",
+      link: "https://www.youtube.com/watch?v=hAn-DWwHu6E",
+      ytID: "hAn-DWwHu6E",
+      duration: "05:57",
+      dimension: "2d",
+      definition: "hd",
+      caption: "false",
+      licensedContent: "true",
+      projection: "rectangular",
+      thumbnail: "https://i.ytimg.com/vi/hAn-DWwHu6E/default.jpg",
+      created: "2018-12-25T06:05:18.000+0000",
+      modified: "2018-12-25T06:05:18.000+0000",
+      timeSince: "16 hours",
+      embedLink: "https://www.youtube.com/embed/hAn-DWwHu6E",
+      embedded: true
+    }]
+    const videoWrapper = shallow(<Video index={1} classes={classes} videos={videos}/>)
+    const iframe = videoWrapper.find(Paper).find(Grid).at(5).find(CardMedia)
 
-  //   // Assert
-  //   expect(iframe).toHaveLength(0);
-  // })
+    // Assert
+    expect(iframe).toHaveLength(1);
+    expect(iframe.prop('image')).toBe('https://www.youtube.com/embed/hAn-DWwHu6E')
+    expect(iframe.prop('component')).toBe('iframe')
 
-  // it('contains an iframe when embedded is true for a video', () => {
-  //   // Setup
-  //   const videos = [{ 
-  //     id: 1,
-  //     title: "Dean Town",
-  //     link: "https://www.youtube.com/watch?v=hAn-DWwHu6E",
-  //     ytID: "hAn-DWwHu6E",
-  //     duration: "05:57",
-  //     dimension: "2d",
-  //     definition: "hd",
-  //     caption: "false",
-  //     licensedContent: "true",
-  //     projection: "rectangular",
-  //     thumbnail: "https://i.ytimg.com/vi/hAn-DWwHu6E/default.jpg",
-  //     created: "2018-12-25T06:05:18.000+0000",
-  //     modified: "2018-12-25T06:05:18.000+0000",
-  //     timeSince: "16 hours ",
-  //     embedded: "true"
-  //   }]
-  //   const videoWrapper = shallow(<Video index={0} classes={classes} videos={videos}/>)
-  //   const iframe = videoWrapper.find(Paper).find(Grid).at(5).find('div').find('iframe')
-
-  //   // Assert
-  //   expect(iframe).toHaveLength(1);
-  // })
+  })
 
   // it('contains clickable "Edit" title text that calls the action creator', () => {
   //   // Setup
@@ -122,5 +112,7 @@ describe('Video Component', () => {
   //   expect(videoTitleLink).toHaveLength(1)
   //   expect(editVideo.calledOnce).toBe(true)
   // })
+
+
 
 })

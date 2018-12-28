@@ -244,4 +244,54 @@ describe('reducer', () => {
                                  }
            )).toEqual(expected)
   })
+
+  it('should return state with copied = true for a video that has been copied to the clipboard', () => {
+    const initialState = {
+      view: 'video_list',
+      videos: [
+        {id: 1, title: 'Star Wars IV'},
+        {id: 2, title:'Star Trek II'}
+      ],
+    }
+
+    const expected = {
+      view: 'video_list',
+      videos: [
+        {id: 1, title: 'Star Wars IV', copied:true},
+        {id: 2, title: 'Star Trek II'}
+      ]
+    }
+
+    expect(reducer(initialState, {
+                                   type: 'COPIED_TO_CLIPBOARD',
+                                   id: 1
+                                 }
+           )).toEqual(expected)
+  })
+
+  it('should return state with the sorted by method and correct sort for method', () => {
+    const initialState = {
+      view: 'video_list',
+      sortedBy: 'voted',
+      videos: [
+        {id: 1, title: 'Dean Town', votes:3, created:'2018-12-27T10:39:40.000+0000'},
+        {id: 2, title:'Egg Drop', votes:5, created:'2018-12-28T03:34:04.000+0000'}
+      ],
+    }
+
+    const expected = {
+      view: 'video_list',
+      sortedBy: 'recent',
+      videos: [
+        {id: 2, title:'Egg Drop', votes:5, created:'2018-12-28T03:34:04.000+0000'},
+        {id: 1, title: 'Dean Town', votes:3, created:'2018-12-27T10:39:40.000+0000'}
+      ]
+    }
+
+    expect(reducer(initialState, {
+                                   type: 'SORT_VIDEOS',
+                                   sortBy: 'recent'
+                                 }
+           )).toEqual(expected)
+  })
 })
