@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 import Video from '../Video/Video';
-import { getVideoList, sortVideos } from '../../actions/index'
+import { getVideoList } from '../../actions/index'
 
 export class VideoList extends Component {
   render() {
@@ -13,9 +13,8 @@ export class VideoList extends Component {
     )
   }
 
-  async componentDidMount() {
-    await this.props.getVideoList()
-    this.props.sortVideos('voted')
+  componentDidMount() {
+    this.props.getVideoList('voted')
   }
 }
 
@@ -24,8 +23,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    getVideoList: () => dispatch(getVideoList()),
-    sortVideos: (sortBy) => dispatch(sortVideos(sortBy))
+    getVideoList: (sortBy) => dispatch(getVideoList(sortBy)),
 })
 
 export default connect(

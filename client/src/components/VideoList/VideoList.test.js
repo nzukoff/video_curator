@@ -8,11 +8,9 @@ import sinon from 'sinon'
 it('displays a list of video titles', () => {
   const videoData = []
   const getVideoList = sinon.stub()
-  const sortVideos = sinon.stub()
-  const videoListWrapper = shallow(<VideoList videos={videoData} getVideoList={getVideoList} sortVideos={sortVideos} />)
+  const videoListWrapper = shallow(<VideoList videos={videoData} getVideoList={getVideoList} />)
   const videos = videoListWrapper.find(Video)
 
   expect(videos).toHaveLength(0)
   expect(getVideoList.calledOnce).toBe(true)
-  // expect(sortVideos.calledWith('voted')).toBe(true)
 });

@@ -1,11 +1,29 @@
 import moment from 'moment';
 
+export const getVideoList = (sortBy) => {
+  return async (dispatch) => {
+    const response = await fetch('/api/videos')
+    const videos = await response.json()
+    const updatedVideos = updateVideos(videos)
+    const videosSorted = sortVideos(updatedVideos, sortBy)
+    dispatch(sortedVideos())
+    dispatch(gotVideoList(videosSorted, sortBy))
+  }
+}
+
+export const gotVideoList = (videos, sortBy) => ({
+  type: 'GOT_VIDEOS',
+  view: 'video_list',
+  videos,
+  sortBy
+})
+
 export const addVideo = () => ({
   type: 'ADD_VIDEO',
   view: 'add_video'
 })
 
-export const saveAddedVideo = (title, link) => {
+export const saveAddedVideo = (title, link, sortBy) => {
   return async (dispatch) => {
     const ytID = link.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/)[1];
     const response = await fetch('/api/videos', {
@@ -16,16 +34,13 @@ export const saveAddedVideo = (title, link) => {
       body: JSON.stringify({ id: 0, title, link, ytID })
     })
     const video = await response.json()
-    dispatch(savedAddedVideo(video.id, video.title, video.link))
+    dispatch(savedAddedVideo())
+    dispatch(getVideoList(sortBy))
   }
 }
 
-export const savedAddedVideo = (index, title, link) => ({
-  type: 'SAVED_ADDED_VIDEO',
-  view: 'video_list',
-  index,
-  title, 
-  link
+export const savedAddedVideo = () => ({
+  type: 'SAVED_ADDED_VIDEO'
 })
 
 export const editVideo = (index, title) => ({
@@ -60,12 +75,7 @@ export const deleteVideo = (index) => {
   return async (dispatch) => {
     await fetch(`/api/videos/${index}`, {
       method: 'DELETE'
-      // headers: {
-      //   'Content-Type': 'application/json'
-      // },
-      // body: JSON.stringify({ id: index })
     })
-    // const video = await response.json()
     dispatch(deletedVideo(index))
   }
 }
@@ -81,20 +91,27 @@ export const embedVideo = (index) => ({
   index
 })
 
-export const getVideoList = () => {
-  return async (dispatch) => {
-    const response = await fetch('/api/videos')
-    const videos = await response.json()
-    const updatedVideos = updateVideos(videos)
-    dispatch(gotVideoList(updatedVideos))
+export const sortedVideos = () => ({
+  type: 'SORTED_VIDEOS'
+})
+
+export const castedVote = () => ({
+  type: 'CASTED_VOTE'
+})
+
+const sortVideos = (videos, sortBy) => {
+  if (sortBy === 'voted') {
+    return [...videos].sort((v1, v2) => parseInt(v2.votes) - parseInt(v1.votes))
+  } else if (sortBy === 'recent') {
+    return [...videos].sort((v1, v2) => {
+      if (new Date(v2.created) > new Date(v1.created)) {
+        return 1
+      } else {
+        return -1
+      }
+    })
   }
 }
-
-export const gotVideoList = (videos) => ({
-  type: 'GOT_VIDEOS',
-  view: 'video_list',
-  videos
-})
 
 const findDuration = (duration) => {
   const durationM = moment.duration(duration)
@@ -129,25 +146,19 @@ const updateVideos = (videos) => {
   })
 }
 
-export const castVote = (index, vote) => {
+export const castVote = (index, vote, sortBy) => {
   return async (dispatch) => {
     const response = await fetch(`/api/videos/${index}/${vote}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      // body: JSON.stringify({ id: index, title: title })
     })
     const video = await response.json()
-    dispatch(castedVote(video.id, video.votes))
+    dispatch(castedVote())
+    dispatch(getVideoList(sortBy))
   }
 }
-
-export const castedVote = (index, votes) => ({
-  type: 'CASTED_VOTE',
-  index,
-  votes
-})
 
 export const copyToClipboard = (id, link) => {
   return async (dispatch) => {
@@ -176,9 +187,4 @@ export const copyToClipboard = (id, link) => {
 export const copiedToClipboard = (id) => ({
   type: 'COPIED_TO_CLIPBOARD',
   id
-})
-
-export const sortVideos = (sortBy) => ({
-  type: 'SORT_VIDEOS',
-  sortBy
 })

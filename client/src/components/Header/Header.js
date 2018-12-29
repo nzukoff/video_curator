@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-import { addVideo, sortVideos } from '../../actions/index'
+import { addVideo, getVideoList } from '../../actions/index'
 
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
@@ -54,8 +54,8 @@ export class Header extends Component {
               open={Boolean(anchorEl)}
               onClose={() => this.handleClose()}
             >
-              <MenuItem id={'SortVoted'} onClick={() => {this.handleClose();this.props.sortVideos("voted")}}>Most Voted</MenuItem>
-              <MenuItem id={'SortRecent'} onClick={() => {this.handleClose();this.props.sortVideos("recent")}}>Most Recent</MenuItem>
+              <MenuItem id={'SortVoted'} onClick={() => {this.handleClose();this.props.getVideoList("voted")}}>Most Voted</MenuItem>
+              <MenuItem id={'SortRecent'} onClick={() => {this.handleClose();this.props.getVideoList("recent")}}>Most Recent</MenuItem>
             </Menu>
             <IconButton onClick={() => this.props.addVideo()} id="AddButton">
               <Add />
@@ -69,7 +69,7 @@ export class Header extends Component {
 
   const mapDispatchToProps = dispatch => ({
     addVideo: () => dispatch(addVideo()),
-    sortVideos: (sortBy) => dispatch(sortVideos(sortBy))
+    getVideoList: (sortBy) => dispatch(getVideoList(sortBy))
   })
 
 export default connect(

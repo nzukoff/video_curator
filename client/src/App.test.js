@@ -1,26 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { App } from './App';
 import VideoList from './components/VideoList/VideoList';
-import AddVideo from './components/AddVideo/AddVideo';
-import EditVideo from './components/EditVideo/EditVideo';
 import Header from './components/Header/Header'
 
-// import { shallow } from 'enzyme';
-import sinon from 'sinon';
-
-import { createShallow, createMount } from '@material-ui/core/test-utils'
-import { AppBar, Toolbar, Typography, IconButton, Button } from '@material-ui/core'
-
+import { createShallow } from '@material-ui/core/test-utils'
 
 describe('App', () => {
   let shallow
-  let mount
 
   beforeEach(() => {
     shallow = createShallow()
-    mount = createMount()
   });
 
   it('displays a video list', () => {
@@ -33,9 +23,7 @@ describe('App', () => {
   });
 
   it('displays a header', () => {
-    // Setup
-    // const shallow = createShallow()
-    
+    // Setup    
     const appWrapper = shallow(
       <App view="video_list"/>
     );

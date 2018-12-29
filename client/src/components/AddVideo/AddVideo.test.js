@@ -38,15 +38,32 @@ describe('AddVideo', () => {
   it('contains an "Cancel" button that calls the getVideoList() action creator', () => {
     // Setup
     const getVideoList = sinon.stub()
-    const addVideoWrapper = mount(<AddVideo getVideoList={getVideoList} />);
+    const addVideoWrapper = shallow(<AddVideo getVideoList={getVideoList} sortBy={'recent'} />)
     const cancelButton = addVideoWrapper.find(Button).at(0)
-    addVideoWrapper.setState({updatedTitle: 'Dean Town', link: 'https://www.youtube.com/watch?v=hAn-DWwHu6E'})
 
     // Exercise
     cancelButton.simulate('click')
 
     // Assert
     expect(getVideoList.calledOnce).toBe(true)
-    expect(cancelButton.text()).toEqual('Cancel')
+    expect(getVideoList.calledWith('recent')).toBe(true)
+
+
+
+    
+
+
+    // // Setup
+    // const getVideoList = sinon.stub()
+    // const addVideoWrapper = mount(<AddVideo getVideoList={getVideoList} />);
+    // const cancelButton = addVideoWrapper.find(Button).at(0)
+    // addVideoWrapper.setState({updatedTitle: 'Dean Town', link: 'https://www.youtube.com/watch?v=hAn-DWwHu6E'})
+
+    // // Exercise
+    // cancelButton.simulate('click')
+
+    // // Assert
+    // expect(getVideoList.calledOnce).toBe(true)
+    // expect(cancelButton.text()).toEqual('Cancel')
   })
 })

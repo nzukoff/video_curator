@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import { castVote } from '../../actions/index'
 
 import { Typography, IconButton } from '@material-ui/core'
-import Add from '@material-ui/icons/Add'
-import Remove from '@material-ui/icons/Remove'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 
@@ -37,13 +35,13 @@ export const Counter = (props) => {
     const video = props.videos.find(video => video.id===props.id)
     return (
       <div className={classes.controls}>        
-        <IconButton onClick={() => props.castVote(video.id, "upvote")} id="UpvoteButton" className={classes.voteButton}>
+        <IconButton onClick={() => props.castVote(video.id, "upvote", props.sortBy)} id="UpvoteButton" className={classes.voteButton}>
             <ExpandLess className={classes.voteIcon}/>
         </IconButton>
         <Typography variant="subtitle1" color="textSecondary" component="h3" id="VideoVotes" className={classes.voteCount}>
             {video.votes}
         </Typography>
-        <IconButton onClick={() => props.castVote(video.id, "downvote")} id="DownvoteButton" className={classes.voteButton}>
+        <IconButton onClick={() => props.castVote(video.id, "downvote", props.sortBy)} id="DownvoteButton" className={classes.voteButton}>
             <ExpandMore className={classes.voteIcon}/>
         </IconButton>            
       </div>
@@ -51,11 +49,12 @@ export const Counter = (props) => {
   }
 
 const mapStateToProps = state => ({
-    videos: state.videos
+    videos: state.videos,
+    sortBy: state.sortBy
 })
 
 const mapDispatchToProps = dispatch => ({
-    castVote: (index, vote) => dispatch(castVote(index, vote))
+    castVote: (index, vote, sortBy) => dispatch(castVote(index, vote, sortBy))
 })
 
 export default connect(

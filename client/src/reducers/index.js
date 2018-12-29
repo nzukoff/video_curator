@@ -32,7 +32,8 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         videos: action.videos,
-        view: action.view
+        view: action.view, 
+        sortBy: action.sortBy
       }
 
     case 'SAVED_ADDED_VIDEO':
@@ -98,18 +99,18 @@ const rootReducer = (state = initialState, action) => {
         videos: newVideos
       }
 
-    case 'CASTED_VOTE':
-      newVideos = state.videos.map(video => {
-        if (video.id === action.index) {
-          return { ...video, votes: action.votes}
-        } else {
-          return video
-        }
-      })
-      return {
-        ...state,
-        videos: newVideos
-      }
+    // case 'CASTED_VOTE':
+    //   newVideos = state.videos.map(video => {
+    //     if (video.id === action.index) {
+    //       return { ...video, votes: action.votes}
+    //     } else {
+    //       return video
+    //     }
+    //   })
+    //   return {
+    //     ...state,
+    //     videos: newVideos
+    //   }
 
     case 'COPIED_TO_CLIPBOARD':
       newVideos = state.videos.map(video => {
@@ -124,24 +125,24 @@ const rootReducer = (state = initialState, action) => {
         videos: newVideos
       }
 
-    case 'SORT_VIDEOS':
-      if (action.sortBy === 'voted') {
-        newVideos = [...state.videos].sort((v1, v2) => parseInt(v2.votes) - parseInt(v1.votes))
-      } else if (action.sortBy === 'recent') {
-        newVideos = [...state.videos].sort((v1, v2) => {
-          if (new Date(v2.created) > new Date(v1.created)) {
-            return 1
-          } else {
-            return -1
-          }
-        })
-      }
+    // case 'SORT_VIDEOS':
+    //   if (action.sortBy === 'voted') {
+    //     newVideos = [...state.videos].sort((v1, v2) => parseInt(v2.votes) - parseInt(v1.votes))
+    //   } else if (action.sortBy === 'recent') {
+    //     newVideos = [...state.videos].sort((v1, v2) => {
+    //       if (new Date(v2.created) > new Date(v1.created)) {
+    //         return 1
+    //       } else {
+    //         return -1
+    //       }
+    //     })
+    //   }
   
-      return {
-        ...state,
-        videos: newVideos,
-        sortedBy: action.sortBy
-      }
+    //   return {
+    //     ...state,
+    //     videos: newVideos,
+    //     sortedBy: action.sortBy
+    //   }
     
     default:
       return (state)

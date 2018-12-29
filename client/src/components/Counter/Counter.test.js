@@ -82,7 +82,7 @@ describe('Counter', () => {
 
   it('clicking the "upvote" button calls the "castVote()" action creator', () => {
     const castVote = sinon.stub()
-    const counterWrapper = shallow(<Counter castVote={castVote} classes={classes} id={1} videos={videos}/>)
+    const counterWrapper = shallow(<Counter castVote={castVote} classes={classes} id={1} videos={videos} sortBy={"voted"}/>)
     const upvoteButton = counterWrapper.find(IconButton).at(0)
 
     // Exercise
@@ -90,12 +90,12 @@ describe('Counter', () => {
 
     // Assert
     expect(castVote.calledOnce).toBe(true)
-    expect(castVote.calledWith(1, "upvote")).toBe(true)
+    expect(castVote.calledWith(1, "upvote", "voted")).toBe(true)
   })
 
   it('clicking the "downvote" button calls the "castVote()" action creator', () => {
     const castVote = sinon.stub()
-    const counterWrapper = shallow(<Counter castVote={castVote} classes={classes} id={1} videos={videos}/>)
+    const counterWrapper = shallow(<Counter castVote={castVote} classes={classes} id={1} videos={videos} sortBy={"voted"}/>)
     const downvoteButton = counterWrapper.find(IconButton).at(1)
 
     // Exercise
@@ -103,7 +103,7 @@ describe('Counter', () => {
 
     // Assert
     expect(castVote.calledOnce).toBe(true)
-    expect(castVote.calledWith(1, "downvote")).toBe(true)
+    expect(castVote.calledWith(1, "downvote", "voted")).toBe(true)
   })
 
 

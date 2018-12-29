@@ -17,17 +17,25 @@ describe('actions', () => {
     expect(actions.addVideo()).toEqual(expectedAction)
   })
 
+  // it('should create an action to save a newly added video', () => {
+  //   const index = 1
+  //   const title = 'Brazil'
+  //   const expectedAction = {
+  //     type: 'SAVED_ADDED_VIDEO',
+  //     view: 'video_list',
+  //     index: 1,
+  //     title: 'Brazil'
+  //   }
+
+  //   expect(actions.savedAddedVideo(index, title)).toEqual(expectedAction)
+  // })
+
   it('should create an action to save a newly added video', () => {
-    const index = 1
-    const title = 'Brazil'
     const expectedAction = {
-      type: 'SAVED_ADDED_VIDEO',
-      view: 'video_list',
-      index: 1,
-      title: 'Brazil'
+      type: 'SAVED_ADDED_VIDEO'
     }
 
-    expect(actions.savedAddedVideo(index, title)).toEqual(expectedAction)
+    expect(actions.savedAddedVideo()).toEqual(expectedAction)
   })
 
   it('should create an action to edit a selected video', () => {
@@ -89,12 +97,10 @@ describe('actions', () => {
 
   it('should create an action to save a vote', () => {
     const expectedAction = {
-      type: 'CASTED_VOTE',
-      index: 1,
-      votes: 10
+      type: 'CASTED_VOTE'
     }
 
-    expect(actions.castedVote(1, 10)).toEqual(expectedAction)
+    expect(actions.castedVote()).toEqual(expectedAction)
   })
 
   it('should create an action to copy a video', () => {
@@ -108,11 +114,10 @@ describe('actions', () => {
 
   it('should create an action to changed the sorting of the videos', () => {
     const expectedAction = {
-      type: 'SORT_VIDEOS',
-      sortBy: 'voted'
+      type: 'SORTED_VIDEOS'
     }
 
-    expect(actions.sortVideos('voted')).toEqual(expectedAction)
+    expect(actions.sortedVideos()).toEqual(expectedAction)
   })
 })
 
@@ -135,13 +140,14 @@ describe('async actions', () => {
                               })
 
     const expectedActions = [
-      { type: 'GOT_VIDEOS', videos: [ { duration: "00:00", timeSince: "NaN day", title: "The Graduate" } ], view: "video_list" }
+      { type: 'SORTED_VIDEOS' }, 
+      { type: 'GOT_VIDEOS', videos: [ { duration: "00:00", timeSince: "NaN day", title: "The Graduate" } ], view: "video_list", sortBy: "voted" }
     ]
 
     const store = mockStore()
 
     // Exercise
-    await store.dispatch(actions.getVideoList())
+    await store.dispatch(actions.getVideoList("voted"))
     expect(store.getActions()).toEqual(expectedActions)
   })
 
@@ -157,13 +163,30 @@ describe('async actions', () => {
                                   }
                                 })
 
-    const expectedActions = [{
-        type: 'SAVED_ADDED_VIDEO',
-        view: 'video_list',
-        index: 1,
-        title: 'Dean Town',
-        link: 'https://www.youtube.com/watch?v=hAn-DWwHu6E'
-    }]
+    fetchMock
+      .getOnce('/api/videos', {
+                                body: [
+                                    {title: "Dean Town", created:"2018-12-28T00:52:41.000+0000", timeSince:"23 hours", votes:"10"}
+                                ],
+                                headers: {
+                                  'content-type': 'application/json'
+                                }
+                              })
+
+    // const expectedActions = [
+    //   { type: 'GOT_VIDEOS', videos: [ { title: "The Graduate", created:"2018-12-28T00:52:41.000+0000", timeSince:"23 hours", votes: "10" } ], view: "video_list", sortBy: "voted" }
+    // ]
+    const expectedActions = [
+      { type: 'SAVED_ADDED_VIDEO' }
+    ]
+
+    // const expectedActions = [{
+    //     type: 'SAVED_ADDED_VIDEO',
+    //     view: 'video_list',
+    //     index: 1,
+    //     title: 'Dean Town',
+    //     link: 'https://www.youtube.com/watch?v=hAn-DWwHu6E'
+    // }]
 
     const store = mockStore()
 
@@ -216,7 +239,7 @@ describe('async actions', () => {
     expect(store.getActions()).toEqual(expectedActions)
   })
 
-  it('should create CASTED_VOTE with upvote when an upvote has been casted', async () => {
+  it('should create GOT_VIDEOS with upvote when an upvote has been casted', async () => {
     // Setup
     fetchMock
       .putOnce('/api/videos/1/upvote', {
@@ -229,16 +252,27 @@ describe('async actions', () => {
                                   }
                                 })
 
-    const expectedActions = [{
-        type: 'CASTED_VOTE',
-        index: 1,
-        votes: 10
-    }]
+    fetchMock
+      .getOnce('/api/videos', {
+                                body: [
+                                    {title: "The Graduate", created:"2018-12-28T00:52:41.000+0000", timeSince:"23 hours", votes:"10"}
+                                ],
+                                headers: {
+                                  'content-type': 'application/json'
+                                }
+                              })
+
+    // const expectedActions = [
+    //   { type: 'GOT_VIDEOS', videos: [ { title: "The Graduate", created:"2018-12-28T00:52:41.000+0000", timeSince:"23 hours", votes: "10" } ], view: "video_list", sortBy: "voted" }
+    // ]
+    const expectedActions = [
+      { type: 'CASTED_VOTE' }
+    ]
 
     const store = mockStore()
 
     // Exercise
-    await store.dispatch(actions.castVote(1, "upvote"))
+    await store.dispatch(actions.castVote(1, 'upvote', 'voted'))
     expect(store.getActions()).toEqual(expectedActions)
   })
 
@@ -246,25 +280,37 @@ describe('async actions', () => {
     // Setup
     fetchMock
       .putOnce('/api/videos/1/downvote', {
-                                  body: {
-                                    id: 1,
-                                    votes: 10
-                                  },
-                                  headers: {
-                                    'content-type': 'application/json'
-                                  }
-                                })
+                                body: {
+                                  id: 1,
+                                  votes: 10
+                                },
+                                headers: {
+                                  'content-type': 'application/json'
+                                }
+                              })
 
-    const expectedActions = [{
-        type: 'CASTED_VOTE',
-        index: 1,
-        votes: 10
-    }]
+    fetchMock
+      .getOnce('/api/videos', {
+                                body: [
+                                    {title: "The Graduate", created:"2018-12-28T00:52:41.000+0000", timeSince:"23 hours", votes:"10"}
+                                ],
+                                headers: {
+                                  'content-type': 'application/json'
+                                }
+                              })
+    // const expectedActions = [{
+    //     type: 'CASTED_VOTE',
+    //     index: 1,
+    //     votes: 10
+    // }]
+    const expectedActions = [
+      { type: 'CASTED_VOTE' }
+    ]
 
     const store = mockStore()
 
     // Exercise
-    await store.dispatch(actions.castVote(1, "downvote"))
+    await store.dispatch(actions.castVote(1, 'downvote', 'voted'))
     expect(store.getActions()).toEqual(expectedActions)
   })
 
