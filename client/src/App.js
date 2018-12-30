@@ -12,6 +12,15 @@ import { addVideo } from './actions/index'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#0D0E0E' },
+  },
+  typography: { useNextVariants: true },
+});
+
 export const App = (props) => {
   let visible_content
 
@@ -30,10 +39,13 @@ export const App = (props) => {
   }
 
   return(
-    <div className="App">
-      <Header />
-      {visible_content}
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <div className="App">
+        <Header />
+        {visible_content}
+      </div>
+    </MuiThemeProvider>
+    
   )
 }
 
