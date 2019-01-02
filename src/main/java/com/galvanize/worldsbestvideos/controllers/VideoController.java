@@ -1,8 +1,8 @@
-package com.galvanize.videocurator.controllers;
+package com.galvanize.worldsbestvideos.controllers;
 
-import com.galvanize.videocurator.models.Video;
-import com.galvanize.videocurator.repositories.VideoRepository;
-import com.galvanize.videocurator.services.VideoService;
+import com.galvanize.worldsbestvideos.models.Video;
+import com.galvanize.worldsbestvideos.repositories.VideoRepository;
+import com.galvanize.worldsbestvideos.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

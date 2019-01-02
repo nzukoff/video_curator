@@ -1,8 +1,8 @@
-package com.galvanize.videocurator.services;
+package com.galvanize.worldsbestvideos.services;
 
-import com.galvanize.videocurator.models.Video;
-import com.galvanize.videocurator.repositories.VideoRepository;
-import com.galvanize.videocurator.wrappers.YtResponseWrapper;
+import com.galvanize.worldsbestvideos.models.Video;
+import com.galvanize.worldsbestvideos.repositories.VideoRepository;
+import com.galvanize.worldsbestvideos.wrappers.YtResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

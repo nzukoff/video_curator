@@ -1,6 +1,6 @@
-package com.galvanize.videocurator.repositories;
+package com.galvanize.worldsbestvideos.repositories;
 
-import com.galvanize.videocurator.models.Video;
+import com.galvanize.worldsbestvideos.models.Video;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

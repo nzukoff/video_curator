@@ -1,8 +1,8 @@
-package com.galvanize.videocurator.controllers;
+package com.galvanize.worldsbestvideos.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.galvanize.videocurator.models.Video;
-import com.galvanize.videocurator.repositories.VideoRepository;
+import com.galvanize.worldsbestvideos.models.Video;
+import com.galvanize.worldsbestvideos.repositories.VideoRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

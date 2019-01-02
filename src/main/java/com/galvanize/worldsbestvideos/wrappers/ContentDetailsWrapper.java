@@ -1,4 +1,4 @@
-package com.galvanize.videocurator.wrappers;
+package com.galvanize.worldsbestvideos.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

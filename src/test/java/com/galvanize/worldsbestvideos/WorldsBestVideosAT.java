@@ -1,4 +1,4 @@
-package com.galvanize.videocurator;
+package com.galvanize.worldsbestvideos;
 
 import org.fluentlenium.adapter.junit.FluentTest;
 import org.fluentlenium.core.hook.wait.Wait;
@@ -20,13 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 
-import com.galvanize.videocurator.models.Video;
-import com.galvanize.videocurator.repositories.VideoRepository;
+import com.galvanize.worldsbestvideos.models.Video;
+import com.galvanize.worldsbestvideos.repositories.VideoRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Wait
-public class VideoCuratorAT extends FluentTest {
+public class WorldsBestVideosAT extends FluentTest {
 
     @Override
     public WebDriver newWebDriver() {

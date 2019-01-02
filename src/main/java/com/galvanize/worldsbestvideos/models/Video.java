@@ -1,6 +1,5 @@
-package com.galvanize.videocurator.models;
+package com.galvanize.worldsbestvideos.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

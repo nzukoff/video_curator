@@ -1,4 +1,4 @@
-package com.galvanize.videocurator;
+package com.galvanize.worldsbestvideos;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class VideoCuratorApplicationTests {
+public class WorldsBestVideosApplicationTests {
 
 	@Test
 	public void contextLoads() {
