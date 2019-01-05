@@ -99,6 +99,19 @@ const rootReducer = (state = initialState, action) => {
         videos: newVideos
       }
 
+    case 'SHARE_VIDEO':
+      newVideos = state.videos.map(video => {
+        if (video.id === action.index) {
+          return { ...video, shared: !video.shared}
+        } else {
+          return video
+        }
+      })
+      return {
+        ...state,
+        videos: newVideos
+      }
+
     // case 'CASTED_VOTE':
     //   newVideos = state.videos.map(video => {
     //     if (video.id === action.index) {
@@ -111,19 +124,6 @@ const rootReducer = (state = initialState, action) => {
     //     ...state,
     //     videos: newVideos
     //   }
-
-    case 'COPIED_TO_CLIPBOARD':
-      newVideos = state.videos.map(video => {
-        if (video.id === action.id) {
-          return { ...video, copied: true}
-        } else {
-          return video
-        }
-      })
-      return {
-        ...state,
-        videos: newVideos
-      }
 
     // case 'SORT_VIDEOS':
     //   if (action.sortBy === 'voted') {

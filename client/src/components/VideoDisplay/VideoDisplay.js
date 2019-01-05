@@ -1,16 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { editVideo, embedVideo, copyToClipboard } from '../../actions/index'
+import Share from '../Share/Share'
+import { editVideo, embedVideo, shareVideo } from '../../actions/index'
 
 import { Typography, IconButton, Button } from '@material-ui/core'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import ShareIcon from '@material-ui/icons/Share'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   playIcon: {
     height: 30,
     width: 30,
+    [theme.breakpoints.down('sm')]: {
+      height: 18,
+      width: 18,
+    },
+  },
+  shareIcon: {
+    height: 25,
+    width: 25,
     [theme.breakpoints.down('sm')]: {
       height: 15,
       width: 15,
@@ -40,7 +50,7 @@ const styles = theme => ({
 
 export const VideoDisplay = (props) => {
     const video = props.videos.find(video => video.id===props.id)
-    const { classes } = props
+    const { classes } = props    
     return (
       <div className="VideoDisplay">
         <Typography variant="h6" component="a" href={video.link} className={classes.text}>
@@ -52,9 +62,10 @@ export const VideoDisplay = (props) => {
         <IconButton aria-label="Play/pause" onClick={() => props.embedVideo(props.id)} id="PlayButton">
             <PlayArrowIcon className={classes.playIcon}/>
         </IconButton>
-        <Button onClick={() => props.copyToClipboard(video.id, video.link)} className={classes.buttonText} id="CopyLink">
-            Copy Link
-        </Button>
+        <IconButton onClick={() => props.shareVideo(video.id)} className={classes.buttonText} id="Share">
+            <ShareIcon className={classes.shareIcon}/>
+        </IconButton>
+        <Share video={video} open={video.shared}/>
       </div>
     )
   }
@@ -66,7 +77,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editVideo: (index, title) => dispatch(editVideo(index, title)),
   embedVideo: (index) => dispatch(embedVideo(index)),
-  copyToClipboard: (id, link) => dispatch(copyToClipboard(id, link))
+  shareVideo: (index) => dispatch(shareVideo(index)),
 })
 
 export default connect(

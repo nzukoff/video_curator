@@ -245,30 +245,6 @@ describe('reducer', () => {
   //          )).toEqual(expected)
   // })
 
-  it('should return state with copied = true for a video that has been copied to the clipboard', () => {
-    const initialState = {
-      view: 'video_list',
-      videos: [
-        {id: 1, title: 'Star Wars IV'},
-        {id: 2, title:'Star Trek II'}
-      ],
-    }
-
-    const expected = {
-      view: 'video_list',
-      videos: [
-        {id: 1, title: 'Star Wars IV', copied:true},
-        {id: 2, title: 'Star Trek II'}
-      ]
-    }
-
-    expect(reducer(initialState, {
-                                   type: 'COPIED_TO_CLIPBOARD',
-                                   id: 1
-                                 }
-           )).toEqual(expected)
-  })
-
   // it('should return state with the sorted by method and correct sort for method', () => {
   //   const initialState = {
   //     view: 'video_list',

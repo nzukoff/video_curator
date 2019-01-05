@@ -91,6 +91,11 @@ export const embedVideo = (index) => ({
   index
 })
 
+export const shareVideo = (index) => ({
+  type: 'SHARE_VIDEO',
+  index
+})
+
 export const sortedVideos = () => ({
   type: 'SORTED_VIDEOS'
 })
@@ -142,7 +147,7 @@ const updateVideos = (videos) => {
   return videos.map((video, i) => {
     const timeSince = findTimeSince(video.created)
     const duration = findDuration(video.duration)
-    return {...video, timeSince: timeSince, duration: duration}
+    return {...video, timeSince: timeSince, duration: duration, shared: false}
   })
 }
 
@@ -159,32 +164,3 @@ export const castVote = (index, vote, sortBy) => {
     dispatch(getVideoList(sortBy))
   }
 }
-
-export const copyToClipboard = (id, link) => {
-  return async (dispatch) => {
-    const el = document.createElement('textarea')
-    el.value = link
-    el.setAttribute('readonly', '')
-    el.style.position = 'absolute'
-    el.style.left = '-9999px'
-    document.body.appendChild(el)
-    if (navigator.userAgent.match(/ipad|iphone/i)) {
-      let range = document.createRange()
-      range.selectNodeContents(el)
-      let selection = window.getSelection()
-      selection.removeAllRanges()
-      selection.addRange(range)
-      el.setSelectionRange(0, 999999)
-    } else {
-      el.select()
-    }
-    document.execCommand('copy')
-    document.body.removeChild(el)
-    dispatch(copiedToClipboard(id))
-  }
-}
-
-export const copiedToClipboard = (id) => ({
-  type: 'COPIED_TO_CLIPBOARD',
-  id
-})

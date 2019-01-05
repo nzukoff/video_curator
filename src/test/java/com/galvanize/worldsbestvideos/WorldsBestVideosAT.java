@@ -244,6 +244,7 @@ public class WorldsBestVideosAT extends FluentTest {
 
         await().until(() -> $("a").present());
         assertThat($("a").get(0).text()).isEqualTo("Dean Town - [05:57]");
+        await().until(() -> $("#VideoThumbnail").present());
 
         $("#VideoThumbnail").click();
 
@@ -275,6 +276,32 @@ public class WorldsBestVideosAT extends FluentTest {
 
         await().until(() -> $("#Iframe").present());
     }
+
+    @Test
+    public void testShowShareComponentFromShareButton() {
+        Video video = new Video("Dean Town",
+                "https://www.youtube.com/watch?v=hAn-DWwHu6E",
+                "hAn-DWwHu6E",
+                "PT5M57S",
+                "2d",
+                "hd",
+                "false",
+                "true",
+                "rectangular",
+                "https://i.ytimg.com/vi/hAn-DWwHu6E/sddefault.jpg",
+                "https://www.youtube.com/embed/hAn-DWwHu6E"
+        );
+        videoRepository.save(video);
+
+        goTo("http://localhost:" + this.port + "/");
+
+        await().until(() -> $("#Share").present());
+
+        $("#Share").click();
+
+        await().until(() -> $("#CopyLink").present());
+    }
+
 
 
 //    @Test

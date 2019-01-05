@@ -103,15 +103,6 @@ describe('actions', () => {
     expect(actions.castedVote()).toEqual(expectedAction)
   })
 
-  it('should create an action to copy a video', () => {
-    const expectedAction = {
-      type: 'COPIED_TO_CLIPBOARD',
-      id: 1
-    }
-
-    expect(actions.copiedToClipboard(1)).toEqual(expectedAction)
-  })
-
   it('should create an action to changed the sorting of the videos', () => {
     const expectedAction = {
       type: 'SORTED_VIDEOS'
@@ -141,7 +132,7 @@ describe('async actions', () => {
 
     const expectedActions = [
       { type: 'SORTED_VIDEOS' }, 
-      { type: 'GOT_VIDEOS', videos: [ { duration: "00:00", timeSince: "NaN day", title: "The Graduate" } ], view: "video_list", sortBy: "voted" }
+      { type: 'GOT_VIDEOS', videos: [ { duration: "00:00", timeSince: "NaN day", title: "The Graduate", shared:false } ], view: "video_list", sortBy: "voted" }
     ]
 
     const store = mockStore()
@@ -313,18 +304,4 @@ describe('async actions', () => {
     await store.dispatch(actions.castVote(1, 'downvote', 'voted'))
     expect(store.getActions()).toEqual(expectedActions)
   })
-
-  // it('should create COPIED_TO_CLIPBOARD when video has been copied', async () => {
-  //   // Setup
-  //   // NEED TO MOCK DOCUMENT
-  //   const expectedActions = [{
-  //       type: 'COPIED_TO_CLIPBOARD',
-  //       id: 1
-  //   }]
-  //   const store = mockStore()
-  //
-  //   // Exercise
-  //   await store.dispatch(actions.copyToClipboard(1, "https://www.youtube.com/watch?v=hAn-DWwHu6E"))
-  //   expect(store.getActions()).toEqual(expectedActions)
-  // })
 })

@@ -56,7 +56,7 @@ describe('Video Component', () => {
     // Setup
     const embedVideo = sinon.stub()
     const videoDisplayWrapper = shallow(<VideoDisplay id={1} classes={classes} videos={videos} embedVideo={embedVideo}/>);
-    const playButton = videoDisplayWrapper.find(IconButton)
+    const playButton = videoDisplayWrapper.find(IconButton).at(0)
 
     // Exercise
     playButton.simulate('click')
@@ -64,20 +64,6 @@ describe('Video Component', () => {
     // Assert
     expect(embedVideo.calledOnce).toBe(true)
     expect(embedVideo.calledWith(1)).toBe(true)
-  })
-
-  it('clicking the "copy link" button calls the copyToClipboard() action creator', () => {
-    // Setup
-    const copyToClipboard = sinon.stub()
-    const videoDisplayWrapper = shallow(<VideoDisplay id={1} classes={classes} videos={videos} copyToClipboard={copyToClipboard}/>);
-    const copyLinkButton = videoDisplayWrapper.find('#CopyLink')
-
-    // Exercise
-    copyLinkButton.simulate('click')
-
-    // Assert
-    expect(copyToClipboard.calledOnce).toBe(true)
-    expect(copyToClipboard.calledWith(1, 'https://www.youtube.com/watch?v=hAn-DWwHu6E')).toBe(true)
   })
 
   // it('contains clickable "Edit" title text that calls the action creator', () => {
